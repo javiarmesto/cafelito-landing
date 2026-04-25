@@ -1,0 +1,47 @@
+.fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #8B5E3C, #C8A97E);
+  border: none;
+  border-radius: 50px;
+  padding: 14px 22px 14px 16px;
+  color: #1A0F0A;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 8px 28px rgba(200,169,126,0.3);
+  transition: all 0.25s;
+  cursor: pointer;
+  position: fixed;
+}
+
+.fab:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(200,169,126,0.4);
+}
+
+.fab.active {
+  padding: 14px 18px;
+  background: rgba(200,169,126,0.12);
+  border: 1px solid rgba(200,169,126,0.2);
+  color: rgba(200,169,126,0.7);
+  box-shadow: none;
+}
+
+.icon { font-size: 18px; }
+
+.label { white-space: nowrap; }
+
+.pulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50px;
+  border: 2px solid rgba(200,169,126,0.4);
+  animation: pulseRing 2s ease-out infinite;
+  pointer-events: none;
+}
