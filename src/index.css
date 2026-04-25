@@ -1,17 +1,68 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:wght@400;500&family=JetBrains+Mono:wght@300;400&display=swap');
 
-:root {
-  --bg:         #0F0804;
-  --bg2:        #1A0F0A;
-  --bg3:        #241510;
-  --gold:       #C8A97E;
-  --gold-dim:   rgba(200,169,126,0.18);
-  --gold-faint: rgba(200,169,126,0.07);
-  --border:     rgba(200,169,126,0.12);
-  --text:       #E8D5B7;
-  --muted:      rgba(200,169,126,0.55);
-  --espresso:   #6B4226;
-  --cream:      #F5E6D3;
+/* ── Theme: DARK (default) ──────────────────── */
+:root,
+:root[data-theme="dark"] {
+  --bg:           #0F0804;
+  --bg2:          #1A0F0A;
+  --bg3:          #241510;
+  --gold:         #C8A97E;
+  --gold-strong:  #E0C18E;
+  --gold-dim:     rgba(200,169,126,0.18);
+  --gold-faint:   rgba(200,169,126,0.07);
+  --border:       rgba(200,169,126,0.12);
+  --text:         #E8D5B7;
+  --muted:        rgba(200,169,126,0.55);
+  --espresso:     #6B4226;
+  --cream:        #F5E6D3;
+  --surface:      rgba(26,15,10,0.55);
+  --surface-strong: rgba(36,21,16,0.85);
+  --hero-img-filter: brightness(1) saturate(1);
+  --hero-overlay: linear-gradient(90deg,
+                    rgba(15,8,4,0.95) 0%,
+                    rgba(15,8,4,0.78) 30%,
+                    rgba(15,8,4,0.35) 55%,
+                    rgba(15,8,4,0.10) 80%,
+                    rgba(15,8,4,0.25) 100%),
+                  linear-gradient(180deg,
+                    rgba(15,8,4,0.55) 0%,
+                    transparent 25%,
+                    transparent 75%,
+                    rgba(15,8,4,0.85) 100%);
+  --grain-opacity: 0.025;
+  --shadow-card: 0 30px 80px rgba(0,0,0,0.5);
+}
+
+/* ── Theme: LIGHT (Cream / kraft paper) ────── */
+:root[data-theme="light"] {
+  --bg:           #F5E6D3;
+  --bg2:          #EAD7BD;
+  --bg3:          #DCC4A0;
+  --gold:         #6B4226;
+  --gold-strong:  #4A2D18;
+  --gold-dim:     rgba(107,66,38,0.28);
+  --gold-faint:   rgba(107,66,38,0.10);
+  --border:       rgba(107,66,38,0.25);
+  --text:         #2A1507;
+  --muted:        rgba(42,21,7,0.78);
+  --espresso:     #6B4226;
+  --cream:        #FFF8EC;
+  --surface:      rgba(255,248,236,0.78);
+  --surface-strong: rgba(255,248,236,0.96);
+  --hero-img-filter: brightness(1.08) saturate(0.85) contrast(0.95);
+  --hero-overlay: linear-gradient(90deg,
+                    rgba(245,230,211,0.98) 0%,
+                    rgba(245,230,211,0.92) 35%,
+                    rgba(245,230,211,0.55) 60%,
+                    rgba(245,230,211,0.10) 85%,
+                    rgba(245,230,211,0.25) 100%),
+                  linear-gradient(180deg,
+                    rgba(245,230,211,0.55) 0%,
+                    transparent 25%,
+                    transparent 75%,
+                    rgba(245,230,211,0.85) 100%);
+  --grain-opacity: 0.04;
+  --shadow-card: 0 20px 60px rgba(107,66,38,0.22);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,6 +75,7 @@ body {
   font-family: 'Lora', Georgia, serif;
   min-height: 100vh;
   overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* Grain overlay */
@@ -31,7 +83,7 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  opacity: 0.025;
+  opacity: var(--grain-opacity);
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 0;
@@ -70,4 +122,9 @@ button { cursor: pointer; font-family: inherit; }
 @keyframes msgIn {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bigPulse {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
 }

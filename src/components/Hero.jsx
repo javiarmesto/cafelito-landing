@@ -1,5 +1,6 @@
 // src/components/Hero.jsx
 import styles from './Hero.module.css'
+import HeroVoiceCard from './HeroVoiceCard.jsx'
 
 export default function Hero({ onChatOpen }) {
   return (
@@ -21,7 +22,7 @@ export default function Hero({ onChatOpen }) {
         </h1>
 
         <p className={styles.subtitle}>
-          Habla con Cafelito — nuestro asesor de voz — y descubre el origen
+          Habla con Cafelito, nuestro asesor de voz, y descubre el origen
           perfecto para tu paladar. Granos de especialidad de 8 orígenes, entregados en casa.
         </p>
 
@@ -39,6 +40,10 @@ export default function Hero({ onChatOpen }) {
             <span key={i} className={styles.flag}>{f}</span>
           ))}
         </div>
+      </div>
+
+      <div className={styles.voiceSlot}>
+        <HeroVoiceCard onActivate={onChatOpen} />
       </div>
 
     </section>

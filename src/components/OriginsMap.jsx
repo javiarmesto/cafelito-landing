@@ -43,7 +43,7 @@ export default function OriginsMap() {
         </h2>
         <p className={styles.subtitle}>
           Granos seleccionados directamente en finca y tostados aquí. Cada
-          origen tiene una historia — Cafelito te ayuda a encontrar el tuyo.
+          origen tiene una historia, y Cafelito te ayuda a encontrar el tuyo.
         </p>
       </div>
 

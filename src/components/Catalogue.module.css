@@ -13,7 +13,8 @@
 .label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  color: rgba(200,169,126,0.4);
+  color: var(--gold);
+  opacity: 0.75;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin-bottom: 12px;
@@ -23,7 +24,7 @@
   font-family: 'Playfair Display', Georgia, serif;
   font-size: clamp(28px, 4vw, 42px);
   font-weight: 700;
-  color: var(--cream);
+  color: var(--text);
   margin-bottom: 12px;
 }
 
