@@ -6,8 +6,9 @@
 // ─────────────────────────────────────────────
 import { useState } from 'react'
 import { VocalBridgeProvider } from '@vocalbridgeai/react'
-import Hero      from './components/Hero.jsx'
-import Catalogue from './components/Catalogue.jsx'
+import Hero        from './components/Hero.jsx'
+import OriginsMap  from './components/OriginsMap.jsx'
+import Catalogue   from './components/Catalogue.jsx'
 import VoiceWidget from './components/VoiceWidget.jsx'
 import VoiceFAB  from './components/VoiceFAB.jsx'
 import './index.css'
@@ -46,6 +47,7 @@ export default function App() {
 
       {/* Page */}
       <Hero onChatOpen={() => setWidgetOpen(true)} />
+      <OriginsMap />
       <Catalogue />
 
       {/* Footer */}
