@@ -28,13 +28,19 @@ function SoundWave({ active }) {
 }
 
 // ── Transcript entry ─────────────────────────
-function Entry({ role, text }) {
+function formatTime(timestamp) {
+  if (!timestamp) return ''
+  return new Date(timestamp).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })
+}
+
+function Entry({ role, text, timestamp }) {
   const isUser = role === 'user'
   return (
     <div className={`${styles.entry} ${isUser ? styles.entryUser : styles.entryAgent}`}>
       {!isUser && <div className={styles.entryAvatar}>☕</div>}
       <div className={`${styles.bubble} ${isUser ? styles.bubbleUser : styles.bubbleAgent}`}>
         {text}
+        <span className={styles.bubbleTime}>{formatTime(timestamp)}</span>
       </div>
     </div>
   )
@@ -48,14 +54,27 @@ export default function VoiceWidget({ onClose }) {
     disconnect,
     isMicrophoneEnabled,
     toggleMicrophone,
+    agentMode,
     error,
   } = useVocalBridge()
 
   const { transcript, clear } = useTranscript()
   const transcriptRef = useRef(null)
 
-  const isConnected   = state === ConnectionState.Connected
-  const isConnecting  = state === ConnectionState.Connecting
+  const isConnected    = state === ConnectionState.Connected
+  const isReconnecting = state === ConnectionState.Reconnecting
+  const isWaiting      = state === ConnectionState.WaitingForAgent
+  const isConnecting   = state === ConnectionState.Connecting || isWaiting
+  const inSession      = isConnected || isReconnecting
+
+  const statusLabel = {
+    [ConnectionState.Connected]:       'en línea',
+    [ConnectionState.Connecting]:      'conectando',
+    [ConnectionState.WaitingForAgent]: 'esperando agente',
+    [ConnectionState.Reconnecting]:    'reconectando',
+    [ConnectionState.Disconnecting]:   'cerrando',
+    [ConnectionState.Disconnected]:    'inactivo',
+  }[state] ?? 'inactivo'
 
   // Auto-scroll transcript
   useEffect(() => {
@@ -77,16 +96,16 @@ export default function VoiceWidget({ onClose }) {
             </div>
             <div>
               <div className={styles.name}>Cafelito</div>
-              <div className={styles.sub}>Asesor de café · BC MCP</div>
+              <div className={styles.sub}>
+                Asesor de café · {agentMode || 'BC MCP'}
+              </div>
             </div>
           </div>
 
           <div className={styles.headerRight}>
             <div className={styles.statusRow}>
-              <span className={styles.statusText}>
-                {isConnected ? 'en línea' : isConnecting ? 'conectando' : 'inactivo'}
-              </span>
-              <div className={`${styles.statusDot} ${isConnected ? styles.online : ''}`} />
+              <span className={styles.statusText}>{statusLabel}</span>
+              <div className={`${styles.statusDot} ${isConnected ? styles.online : ''} ${(isConnecting || isReconnecting) ? styles.busy : ''}`} />
             </div>
             <button className={styles.closeBtn} onClick={onClose}>✕</button>
           </div>
@@ -105,15 +124,17 @@ export default function VoiceWidget({ onClose }) {
             <div className={styles.empty}>
               <div className={styles.emptyIcon}>☕</div>
               <div className={styles.emptyText}>
-                {isConnecting
-                  ? 'Conectando con Cafelito...'
-                  : 'Pulsa conectar y empieza a hablar'}
+                {isWaiting
+                  ? 'Cafelito se está preparando...'
+                  : isConnecting
+                    ? 'Conectando con Cafelito...'
+                    : 'Pulsa conectar y empieza a hablar'}
               </div>
               {isConnecting && <div className={styles.spinner} />}
             </div>
           ) : (
             transcript.map((entry, i) => (
-              <Entry key={i} role={entry.role} text={entry.text} />
+              <Entry key={i} role={entry.role} text={entry.text} timestamp={entry.timestamp} />
             ))
           )}
         </div>
@@ -121,8 +142,8 @@ export default function VoiceWidget({ onClose }) {
         {/* ── Controls ── */}
         <div className={styles.controls}>
 
-          {/* Wave + mic + clear (solo cuando conectado) */}
-          {isConnected && (
+          {/* Wave + mic + clear (solo en sesión) */}
+          {inSession && (
             <div className={styles.controlRow}>
               <SoundWave active={isMicrophoneEnabled} />
               <div className={styles.btnRow}>
@@ -141,14 +162,14 @@ export default function VoiceWidget({ onClose }) {
           )}
 
           {/* Connect / Disconnect */}
-          {!isConnected ? (
+          {!inSession ? (
             <button
               className={styles.connectBtn}
               onClick={connect}
               disabled={isConnecting}
             >
               {isConnecting ? (
-                <><div className={styles.spinnerSmall} /> Conectando...</>
+                <><div className={styles.spinnerSmall} /> {isWaiting ? 'Esperando a Cafelito...' : 'Conectando...'}</>
               ) : (
                 <><span>☕</span> Hablar con Cafelito</>
               )}
@@ -160,7 +181,7 @@ export default function VoiceWidget({ onClose }) {
           )}
 
           {/* BC tools indicator */}
-          {isConnected && (
+          {inSession && (
             <div className={styles.tools}>
               <div className={styles.toolsLabel}>// herramientas BC activas</div>
               <div className={styles.chips}>

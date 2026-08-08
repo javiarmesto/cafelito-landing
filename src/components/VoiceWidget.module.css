@@ -89,6 +89,7 @@
   position: relative;
 }
 
+.statusDot.busy   { background: #FBBF24; }
 .statusDot.online { background: #4ADE80; }
 .statusDot.online::after {
   content: '';
@@ -207,6 +208,15 @@
   background: linear-gradient(135deg, #6B4226, #8B5E3C);
   border-radius: 16px 16px 4px 16px;
   color: #F5E6D3;
+}
+
+.bubbleTime {
+  display: block;
+  margin-top: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  opacity: 0.45;
+  text-align: right;
 }
 
 /* ── Controls ── */
