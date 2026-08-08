@@ -11,6 +11,7 @@ const CartContext = createContext(null)
 
 export function CartProvider({ children }) {
   const [entries, setEntries] = useState([])   // [{ id, qty }]
+  const [lastOrder, setLastOrder] = useState(null)   // { order_number, total } del agente
 
   const addItem = useCallback((id, qty = 1) => {
     setEntries(prev => {
@@ -48,8 +49,8 @@ export function CartProvider({ children }) {
   const total = useMemo(() => items.reduce((sum, i) => sum + i.price * i.qty, 0), [items])
 
   const value = useMemo(
-    () => ({ items, count, total, addItem, setQty, removeItem, clear }),
-    [items, count, total, addItem, setQty, removeItem, clear]
+    () => ({ items, count, total, addItem, setQty, removeItem, clear, lastOrder, setLastOrder }),
+    [items, count, total, addItem, setQty, removeItem, clear, lastOrder]
   )
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>

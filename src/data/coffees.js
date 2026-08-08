@@ -2,6 +2,7 @@
 export const coffees = [
   {
     id: 'WRB-COL',
+    bcItemNo: 'WRB-1000',   // número de item real en Business Central
     name: 'Colombia',
     type: 'Whole Roasted Beans',
     emoji: '🇨🇴',
@@ -10,7 +11,7 @@ export const coffees = [
     body: 'Redondo',
     notes: 'Caramelo, frutos rojos, naranja',
     price: 17.50,
-    stock: 48,
+    stock: 50,   // fallback — el stock real llega de /api/catalog
     bg: 'linear-gradient(135deg, #3D2010 0%, #6B3A1F 100%)',
     region: 'Huila',
     altitude: '1.500 – 1.900 m',
@@ -22,6 +23,7 @@ export const coffees = [
   },
   {
     id: 'WRB-BRA',
+    bcItemNo: 'WRB-1001',   // número de item real en Business Central
     name: 'Brasil',
     type: 'Whole Roasted Beans',
     emoji: '🇧🇷',
@@ -30,7 +32,7 @@ export const coffees = [
     body: 'Cremoso',
     notes: 'Chocolate, nuez, vainilla',
     price: 18.50,
-    stock: 32,
+    stock: 200,   // fallback — el stock real llega de /api/catalog
     bg: 'linear-gradient(135deg, #2D1A08 0%, #5C3317 100%)',
     region: 'Cerrado Mineiro',
     altitude: '900 – 1.200 m',
@@ -42,6 +44,7 @@ export const coffees = [
   },
   {
     id: 'WRB-ETH',
+    bcItemNo: 'WRB-1006',   // número de item real en Business Central
     name: 'Etiopía',
     type: 'Whole Roasted Beans',
     emoji: '🇪🇹',
@@ -50,7 +53,7 @@ export const coffees = [
     body: 'Ligero',
     notes: 'Jazmín, melocotón, bergamota',
     price: 21.00,
-    stock: 15,
+    stock: 100,   // fallback — el stock real llega de /api/catalog
     bg: 'linear-gradient(135deg, #1E1508 0%, #4A3010 100%)',
     region: 'Yirgacheffe',
     altitude: '1.800 – 2.200 m',
@@ -62,6 +65,7 @@ export const coffees = [
   },
   {
     id: 'WRB-KEN',
+    bcItemNo: 'WRB-1004',   // número de item real en Business Central
     name: 'Kenia',
     type: 'Whole Roasted Beans',
     emoji: '🇰🇪',
@@ -70,7 +74,7 @@ export const coffees = [
     body: 'Brillante',
     notes: 'Grosella negra, tomate, lima',
     price: 22.00,
-    stock: 20,
+    stock: 200,   // fallback — el stock real llega de /api/catalog
     bg: 'linear-gradient(135deg, #1A1005 0%, #3D2808 100%)',
     region: 'Nyeri',
     altitude: '1.700 – 2.000 m',
@@ -82,6 +86,7 @@ export const coffees = [
   },
   {
     id: 'WDB-COL',
+    bcItemNo: 'WDB-1000',   // número de item real en Business Central
     name: 'Colombia Decaf',
     type: 'Whole Decaf Beans',
     emoji: '🌙',
@@ -90,7 +95,7 @@ export const coffees = [
     body: 'Suave',
     notes: 'Chocolate con leche, almendra, miel',
     price: 19.50,
-    stock: 28,
+    stock: 47,   // fallback — el stock real llega de /api/catalog
     bg: 'linear-gradient(135deg, #141010 0%, #2E1E18 100%)',
     region: 'Cauca',
     altitude: '1.600 – 1.850 m',
@@ -102,6 +107,7 @@ export const coffees = [
   },
   {
     id: 'WRB-HAW',
+    bcItemNo: 'WRB-1007',   // número de item real en Business Central
     name: 'Hawaii',
     type: 'Whole Roasted Beans',
     emoji: '🌺',
@@ -110,7 +116,7 @@ export const coffees = [
     body: 'Sedoso',
     notes: 'Macadamia, coco, caramelo suave',
     price: 34.00,
-    stock: 8,
+    stock: 100,   // fallback — el stock real llega de /api/catalog
     bg: 'linear-gradient(135deg, #1A0E08 0%, #402010 100%)',
     region: 'Kona',
     altitude: '600 – 900 m',
@@ -131,6 +137,7 @@ export function resolveCoffee(payload = {}) {
   if (!ref) return null
   return (
     coffees.find(c => c.id.toLowerCase() === ref) ||
+    coffees.find(c => c.bcItemNo.toLowerCase() === ref) ||
     coffees.find(c => c.name.toLowerCase() === ref) ||
     coffees.find(c => c.name.toLowerCase().includes(ref)) ||
     null

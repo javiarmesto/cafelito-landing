@@ -13,7 +13,7 @@ import { useCart } from '../context/CartContext.jsx'
 export default function AgentCartBridge() {
   const { state } = useVocalBridge()
   const { onAction, sendAction } = useAgentActions()
-  const { items, total, addItem, removeItem, clear } = useCart()
+  const { items, total, addItem, removeItem, clear, setLastOrder } = useCart()
 
   useEffect(() => {
     return onAction('add_to_cart', payload => {
@@ -38,6 +38,17 @@ export default function AgentCartBridge() {
     return onAction('clear_cart', () => clear())
   }, [onAction, clear])
 
+  // El agente confirma que el pedido se creó en BC → vaciar carrito + aviso visual
+  useEffect(() => {
+    return onAction('order_created', payload => {
+      setLastOrder({
+        order_number: String(payload.order_number ?? payload.orderNumber ?? ''),
+        total: Number(payload.total) || null,
+      })
+      clear()
+    })
+  }, [onAction, setLastOrder, clear])
+
   // Snapshot del carrito al agente en cada cambio durante la llamada
   const connected = state === ConnectionState.Connected
   const lastSentRef = useRef(null)
@@ -47,7 +58,7 @@ export default function AgentCartBridge() {
       return
     }
     const snapshot = JSON.stringify({
-      items: items.map(i => ({ id: i.id, name: i.name, qty: i.qty, price: i.price })),
+      items: items.map(i => ({ id: i.id, bc_item_no: i.bcItemNo, name: i.name, qty: i.qty, price: i.price })),
       total: Number(total.toFixed(2)),
     })
     if (snapshot === lastSentRef.current) return

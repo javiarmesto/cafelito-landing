@@ -7,6 +7,7 @@
 import { useState } from 'react'
 import { VocalBridgeProvider } from '@vocalbridgeai/react'
 import { CartProvider } from './context/CartContext.jsx'
+import { CatalogProvider } from './context/CatalogContext.jsx'
 import Hero         from './components/Hero.jsx'
 import OriginsMap   from './components/OriginsMap.jsx'
 import Catalogue    from './components/Catalogue.jsx'
@@ -17,6 +18,7 @@ import CartButton from './components/CartButton.jsx'
 import CartDrawer from './components/CartDrawer.jsx'
 import ProductDetail from './components/ProductDetail.jsx'
 import AgentCartBridge from './components/AgentCartBridge.jsx'
+import OrderToast from './components/OrderToast.jsx'
 import './index.css'
 
 const TOKEN_URL = import.meta.env.VITE_TOKEN_URL || 'http://localhost:3001/api/voice-token'
@@ -28,6 +30,7 @@ export default function App() {
 
   return (
     <VocalBridgeProvider options={{ auth: { tokenUrl: TOKEN_URL } }}>
+    <CatalogProvider>
     <CartProvider>
       <AgentCartBridge />
 
@@ -102,6 +105,9 @@ export default function App() {
         <VoiceWidget onClose={() => setWidgetOpen(false)} />
       )}
 
+      {/* Confirmación de pedido creado en BC */}
+      <OrderToast />
+
       {/* Floating button */}
       <VoiceFAB
         onClick={() => setWidgetOpen(o => !o)}
@@ -109,6 +115,7 @@ export default function App() {
       />
 
     </CartProvider>
+    </CatalogProvider>
     </VocalBridgeProvider>
   )
 }
