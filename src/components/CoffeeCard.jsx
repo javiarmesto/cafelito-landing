@@ -11,11 +11,15 @@ function IntensityDots({ value }) {
   )
 }
 
-export default function CoffeeCard({ coffee }) {
+export default function CoffeeCard({ coffee, highlighted = false, onView }) {
   const lowStock = coffee.stock < 20
 
   return (
-    <div className={styles.card}>
+    <div
+      id={`coffee-${coffee.id}`}
+      className={`${styles.card} ${highlighted ? styles.highlighted : ''}`}
+      onClick={() => onView?.(coffee)}
+    >
       {/* Background gradient */}
       <div className={styles.bg} style={{ background: coffee.bg }} />
 

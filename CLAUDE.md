@@ -68,14 +68,35 @@ Nunca usar colores hardcoded — siempre variables CSS.
 ## VoiceWidget — SDK hooks
 
 ```jsx
-import { useVocalBridge, useTranscript } from '@vocalbridgeai/react'
+import { useVocalBridge, useTranscript, useAgentActions } from '@vocalbridgeai/react'
 import { ConnectionState } from '@vocalbridgeai/sdk'
 
-const { state, connect, disconnect, isMicrophoneEnabled, toggleMicrophone, error } = useVocalBridge()
-const { transcript, clear } = useTranscript()
+const {
+  state, connect, disconnect,
+  isMicrophoneEnabled, toggleMicrophone,
+  agentMode,          // mode del agente (del token response) — se muestra en el header
+  error,
+} = useVocalBridge()
+const { transcript, clear } = useTranscript()   // entries con { role, text, timestamp }
 
-// Estados posibles:
-// ConnectionState.Disconnected | Connecting | Connected
+// Estados posibles (todos manejados en VoiceWidget):
+// ConnectionState.Disconnected | Connecting | WaitingForAgent | Connected | Reconnecting | Disconnecting
+```
+
+## Acciones bidireccionales (useAgentActions)
+
+Implementadas en `Catalogue.jsx`:
+
+- **agente → UI**: acción `show_product` — resalta la tarjeta del café (glow dorado 6s)
+  y hace scroll hasta ella. El payload acepta `id` / `item_id` / `product_id` / `sku` / `name`
+  y se resuelve contra `data/coffees.js` (match por id exacto, nombre exacto o parcial).
+- **UI → agente**: al hacer click en una tarjeta con la llamada activa se envía
+  `view_product` con `{ id, name, price }` para dar contexto al agente.
+
+```jsx
+const { onAction, sendAction } = useAgentActions()
+useEffect(() => onAction('show_product', payload => { /* resaltar tarjeta */ }), [onAction])
+sendAction('view_product', { id, name, price })
 ```
 
 El `VocalBridgeProvider` está en `App.jsx` con `options={{ auth: { tokenUrl: TOKEN_URL } }}`.
@@ -162,7 +183,7 @@ Para añadir orígenes: editar `src/data/coffees.js` siguiendo la misma estructu
 
 - [ ] Instalar plugin VocalBridge en Claude Code y conectar a Cafelito
 - [ ] Probar sesión de voz real con backend arrancado
-- [ ] `useAgentActions` — manejar acción `show_product` del agente para resaltar tarjeta en catálogo
+- [x] `useAgentActions` — acción `show_product` resalta tarjeta en catálogo + `view_product` al agente
 - [ ] `useAIAgent` — conectar Cafelito con lógica custom si se necesita
 - [ ] Carrito de compra (estado React + BC `create-sales-order`)
 - [ ] Página de producto individual con detalle expandido
