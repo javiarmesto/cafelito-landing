@@ -7,30 +7,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { useAgentActions, useVocalBridge } from '@vocalbridgeai/react'
 import { ConnectionState } from '@vocalbridgeai/sdk'
-import { coffees } from '../data/coffees.js'
+import { coffees, resolveCoffee } from '../data/coffees.js'
+import { useCart } from '../context/CartContext.jsx'
 import CoffeeCard from './CoffeeCard.jsx'
 import styles from './Catalogue.module.css'
 
 const HIGHLIGHT_MS = 6000
 
-// El payload de show_product puede llegar con distintas claves según
-// cómo lo emita el agente — aceptamos id/sku/nombre indistintamente
-function resolveCoffee(payload = {}) {
-  const ref = String(
-    payload.id ?? payload.item_id ?? payload.product_id ?? payload.sku ?? payload.name ?? ''
-  ).trim().toLowerCase()
-  if (!ref) return null
-  return (
-    coffees.find(c => c.id.toLowerCase() === ref) ||
-    coffees.find(c => c.name.toLowerCase() === ref) ||
-    coffees.find(c => c.name.toLowerCase().includes(ref)) ||
-    null
-  )
-}
-
-export default function Catalogue() {
+export default function Catalogue({ onSelect }) {
   const { state } = useVocalBridge()
   const { onAction, sendAction } = useAgentActions()
+  const { addItem } = useCart()
   const [highlightedId, setHighlightedId] = useState(null)
   const timerRef = useRef(null)
 
@@ -52,6 +39,7 @@ export default function Catalogue() {
   useEffect(() => () => clearTimeout(timerRef.current), [])
 
   const handleView = coffee => {
+    onSelect?.(coffee)
     if (state !== ConnectionState.Connected) return
     sendAction('view_product', {
       id: coffee.id,
@@ -78,6 +66,7 @@ export default function Catalogue() {
             coffee={coffee}
             highlighted={coffee.id === highlightedId}
             onView={handleView}
+            onAdd={c => addItem(c.id)}
           />
         ))}
       </div>

@@ -30,15 +30,21 @@ Proyecto desarrollado por **Javier Armesto** (VS Sistemas) como showcase demo de
 
 ```
 src/
-├── App.jsx                        # Root — VocalBridgeProvider + layout
+├── App.jsx                        # Root — VocalBridgeProvider + CartProvider + layout
 ├── main.jsx                       # Entry point React
 ├── index.css                      # Variables globales + keyframes
+├── context/
+│   └── CartContext.jsx            # Estado global carrito (CartProvider + useCart)
 ├── data/
-│   └── coffees.js                 # Catálogo de 6 orígenes (datos estáticos)
+│   └── coffees.js                 # Catálogo de 6 orígenes + resolveCoffee (matching flexible)
 └── components/
     ├── Hero.jsx / .module.css     # Hero section con CTA
-    ├── Catalogue.jsx / .module.css # Grid de tarjetas de café
-    ├── CoffeeCard.jsx / .module.css # Tarjeta individual
+    ├── Catalogue.jsx / .module.css # Grid de tarjetas + acciones show_product/view_product
+    ├── CoffeeCard.jsx / .module.css # Tarjeta individual (click → detalle, Añadir → carrito)
+    ├── ProductDetail.jsx / .module.css # Modal detalle expandido (región/altitud/proceso)
+    ├── CartButton.jsx / .module.css # Botón carrito navbar con badge
+    ├── CartDrawer.jsx / .module.css # Drawer lateral carrito + checkout por voz
+    ├── AgentCartBridge.jsx        # Puente carrito ↔ agente (add_to_cart, cart_updated…)
     ├── VoiceWidget.jsx / .module.css # Modal widget de voz (SDK real)
     └── VoiceFAB.jsx / .module.css   # Floating button
 ```
@@ -98,6 +104,14 @@ const { onAction, sendAction } = useAgentActions()
 useEffect(() => onAction('show_product', payload => { /* resaltar tarjeta */ }), [onAction])
 sendAction('view_product', { id, name, price })
 ```
+
+### Acciones del carrito (`AgentCartBridge.jsx`)
+
+- **agente → UI**: `add_to_cart` (payload flexible + `qty`/`quantity`), `remove_from_cart`, `clear_cart`
+- **UI → agente**: `cart_updated` — snapshot `{ items: [{id,name,qty,price}], total }` en cada
+  cambio del carrito con la llamada activa (y al reconectar); `checkout_cart` — mismo shape,
+  se envía desde el drawer para que Cafelito cree el pedido en BC (`create-sales-order`)
+- Sin llamada activa, el botón de checkout del drawer abre el widget de voz
 
 El `VocalBridgeProvider` está en `App.jsx` con `options={{ auth: { tokenUrl: TOKEN_URL } }}`.
 `TOKEN_URL` viene de `import.meta.env.VITE_TOKEN_URL` (`.env` local).
@@ -162,6 +176,8 @@ El backend (`cafelito-backend`) debe estar corriendo en `localhost:3001` para qu
 | WRB-HAW | Hawaii | Whole Roasted Beans | 34,00 € |
 
 Para añadir orígenes: editar `src/data/coffees.js` siguiendo la misma estructura.
+Cada café incluye además `region` / `altitude` / `process` / `description` (modal de detalle)
+y el helper `resolveCoffee(payload)` para el matching flexible de las acciones del agente.
 
 ---
 
@@ -185,8 +201,8 @@ Para añadir orígenes: editar `src/data/coffees.js` siguiendo la misma estructu
 - [ ] Probar sesión de voz real con backend arrancado
 - [x] `useAgentActions` — acción `show_product` resalta tarjeta en catálogo + `view_product` al agente
 - [ ] `useAIAgent` — conectar Cafelito con lógica custom si se necesita
-- [ ] Carrito de compra (estado React + BC `create-sales-order`)
-- [ ] Página de producto individual con detalle expandido
+- [x] Carrito de compra — CartContext + drawer + checkout por voz (`checkout_cart` → BC `create-sales-order`)
+- [x] Página de producto individual — modal `ProductDetail` con detalle expandido
 - [ ] Adaptación Flutter (Android) — misma lógica, LiveKit Flutter SDK
 - [ ] Deploy: Vercel (frontend) + Railway/Render (backend)
 

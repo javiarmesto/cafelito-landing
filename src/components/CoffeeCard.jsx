@@ -11,7 +11,7 @@ function IntensityDots({ value }) {
   )
 }
 
-export default function CoffeeCard({ coffee, highlighted = false, onView }) {
+export default function CoffeeCard({ coffee, highlighted = false, onView, onAdd }) {
   const lowStock = coffee.stock < 20
 
   return (
@@ -61,7 +61,12 @@ export default function CoffeeCard({ coffee, highlighted = false, onView }) {
           {coffee.price.toFixed(2)} €
           <span className={styles.per}> / 250g</span>
         </div>
-        <button className={styles.btn}>Añadir</button>
+        <button
+          className={styles.btn}
+          onClick={e => { e.stopPropagation(); onAdd?.(coffee) }}
+        >
+          Añadir
+        </button>
       </div>
     </div>
   )
