@@ -6,21 +6,30 @@
 // ─────────────────────────────────────────────
 import { useState } from 'react'
 import { VocalBridgeProvider } from '@vocalbridgeai/react'
+import { CartProvider } from './context/CartContext.jsx'
 import Hero         from './components/Hero.jsx'
 import OriginsMap   from './components/OriginsMap.jsx'
 import Catalogue    from './components/Catalogue.jsx'
 import ThemeToggle  from './components/ThemeToggle.jsx'
 import VoiceWidget from './components/VoiceWidget.jsx'
 import VoiceFAB  from './components/VoiceFAB.jsx'
+import CartButton from './components/CartButton.jsx'
+import CartDrawer from './components/CartDrawer.jsx'
+import ProductDetail from './components/ProductDetail.jsx'
+import AgentCartBridge from './components/AgentCartBridge.jsx'
 import './index.css'
 
 const TOKEN_URL = import.meta.env.VITE_TOKEN_URL || 'http://localhost:3001/api/voice-token'
 
 export default function App() {
   const [widgetOpen, setWidgetOpen] = useState(false)
+  const [cartOpen, setCartOpen] = useState(false)
+  const [selectedCoffee, setSelectedCoffee] = useState(null)
 
   return (
     <VocalBridgeProvider options={{ auth: { tokenUrl: TOKEN_URL } }}>
+    <CartProvider>
+      <AgentCartBridge />
 
       {/* Navbar */}
       <nav style={{
@@ -46,6 +55,7 @@ export default function App() {
           }}>
             single origin · specialty coffee
           </span>
+          <CartButton onClick={() => setCartOpen(o => !o)} />
           <ThemeToggle />
         </div>
       </nav>
@@ -53,7 +63,7 @@ export default function App() {
       {/* Page */}
       <Hero onChatOpen={() => setWidgetOpen(true)} />
       <OriginsMap />
-      <Catalogue />
+      <Catalogue onSelect={setSelectedCoffee} />
 
       {/* Footer */}
       <footer style={{
@@ -71,6 +81,22 @@ export default function App() {
         </span>
       </footer>
 
+      {/* Product detail (modal) */}
+      {selectedCoffee && (
+        <ProductDetail
+          coffee={selectedCoffee}
+          onClose={() => setSelectedCoffee(null)}
+        />
+      )}
+
+      {/* Cart drawer */}
+      {cartOpen && (
+        <CartDrawer
+          onClose={() => setCartOpen(false)}
+          onOpenVoice={() => { setCartOpen(false); setWidgetOpen(true) }}
+        />
+      )}
+
       {/* Voice widget (modal) */}
       {widgetOpen && (
         <VoiceWidget onClose={() => setWidgetOpen(false)} />
@@ -82,6 +108,7 @@ export default function App() {
         isOpen={widgetOpen}
       />
 
+    </CartProvider>
     </VocalBridgeProvider>
   )
 }
