@@ -7,8 +7,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useAgentActions, useVocalBridge } from '@vocalbridgeai/react'
 import { ConnectionState } from '@vocalbridgeai/sdk'
-import { coffees, resolveCoffee } from '../data/coffees.js'
+import { resolveCoffee } from '../data/coffees.js'
 import { useCart } from '../context/CartContext.jsx'
+import { useCatalog } from '../context/CatalogContext.jsx'
 import CoffeeCard from './CoffeeCard.jsx'
 import styles from './Catalogue.module.css'
 
@@ -18,6 +19,7 @@ export default function Catalogue({ onSelect }) {
   const { state } = useVocalBridge()
   const { onAction, sendAction } = useAgentActions()
   const { addItem } = useCart()
+  const { coffees } = useCatalog()
   const [highlightedId, setHighlightedId] = useState(null)
   const timerRef = useRef(null)
 
@@ -43,6 +45,7 @@ export default function Catalogue({ onSelect }) {
     if (state !== ConnectionState.Connected) return
     sendAction('view_product', {
       id: coffee.id,
+      bc_item_no: coffee.bcItemNo,
       name: coffee.name,
       price: coffee.price,
     }).catch(err => console.error('[catalogue] view_product:', err.message))

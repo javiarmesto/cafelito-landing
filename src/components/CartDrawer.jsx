@@ -29,7 +29,7 @@ export default function CartDrawer({ onClose, onOpenVoice }) {
       return
     }
     sendAction('checkout_cart', {
-      items: items.map(i => ({ id: i.id, name: i.name, qty: i.qty, price: i.price })),
+      items: items.map(i => ({ id: i.id, bc_item_no: i.bcItemNo, name: i.name, qty: i.qty, price: i.price })),
       total: Number(total.toFixed(2)),
     })
       .then(() => setCheckoutSent(true))
