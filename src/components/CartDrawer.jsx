@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { useAgentActions, useVocalBridge } from '@vocalbridgeai/react'
 import { ConnectionState } from '@vocalbridgeai/sdk'
 import { useCart } from '../context/CartContext.jsx'
+import { IconMic, IconClose, IconTrash, IconCart } from './Icons.jsx'
 import styles from './CartDrawer.module.css'
 
 function formatPrice(n) {
@@ -47,12 +48,12 @@ export default function CartDrawer({ onClose, onOpenVoice }) {
               {count === 0 ? 'vacío' : `${count} ud. · ${items.length} orígenes`}
             </div>
           </div>
-          <button className={styles.closeBtn} onClick={onClose}>✕</button>
+          <button className={styles.closeBtn} onClick={onClose} aria-label="Cerrar carrito"><IconClose size={14} /></button>
         </div>
 
         {items.length === 0 ? (
           <div className={styles.empty}>
-            <div className={styles.emptyIcon}>🛒</div>
+            <div className={styles.emptyIcon}><IconCart size={30} /></div>
             <p className={styles.emptyText}>
               Aún no has añadido nada.<br />
               Explora el catálogo o pídele a Cafelito que te recomiende algo.
@@ -63,10 +64,10 @@ export default function CartDrawer({ onClose, onOpenVoice }) {
             <div className={styles.items}>
               {items.map(item => (
                 <div key={item.id} className={styles.item}>
-                  <div className={styles.itemEmoji}>{item.emoji}</div>
+                  <div className={styles.itemEmoji}>{item.id.slice(-3)}</div>
                   <div className={styles.itemInfo}>
                     <div className={styles.itemName}>{item.name}</div>
-                    <div className={styles.itemMeta}>{item.id} · {formatPrice(item.price)} / 250g</div>
+                    <div className={styles.itemMeta}>{item.bcItemNo} · {formatPrice(item.price)} / 250g</div>
                   </div>
                   <div className={styles.qty}>
                     <button className={styles.qtyBtn} onClick={() => setQty(item.id, item.qty - 1)}>−</button>
@@ -74,7 +75,7 @@ export default function CartDrawer({ onClose, onOpenVoice }) {
                     <button className={styles.qtyBtn} onClick={() => setQty(item.id, item.qty + 1)}>+</button>
                   </div>
                   <div className={styles.itemTotal}>{formatPrice(item.price * item.qty)}</div>
-                  <button className={styles.removeBtn} onClick={() => removeItem(item.id)} title="Quitar">🗑</button>
+                  <button className={styles.removeBtn} onClick={() => removeItem(item.id)} aria-label={`Quitar ${item.name}`}><IconTrash size={14} /></button>
                 </div>
               ))}
             </div>
@@ -87,13 +88,12 @@ export default function CartDrawer({ onClose, onOpenVoice }) {
 
               {checkoutSent ? (
                 <div className={styles.sentNote}>
-                  ✓ Pedido enviado a Cafelito — confírmalo por voz
+                  Pedido enviado a Cafelito — confírmalo por voz
                 </div>
               ) : (
                 <button className={styles.checkoutBtn} onClick={handleCheckout}>
-                  {connected
-                    ? '☕ Pedir con Cafelito'
-                    : '🎙 Habla con Cafelito para pedir'}
+                  <IconMic size={16} />
+                  {connected ? 'Pedir con Cafelito' : 'Habla con Cafelito para pedir'}
                 </button>
               )}
 

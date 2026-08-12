@@ -1,0 +1,112 @@
+.rail {
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 9px 20px;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+  opacity: 0.6;
+}
+
+.statOk { color: var(--live); }
+.statOk .dot {
+  background: var(--live);
+  opacity: 1;
+  box-shadow: 0 0 0 3px var(--live-faint);
+}
+
+.count {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 10px;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 10px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.toggle:hover { color: var(--text); border-color: var(--muted); }
+.toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* ── Trazas ── */
+.traces {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 0 20px 11px;
+  scrollbar-width: thin;
+}
+
+.idle {
+  font-size: 10px;
+  color: var(--muted);
+  opacity: 0.75;
+  padding-bottom: 2px;
+}
+
+.trace {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 5px 10px;
+  font-size: 10px;
+  white-space: nowrap;
+  animation: fadeIn 0.25s ease both;
+}
+
+.time {
+  color: var(--muted);
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+.arrowIn  { color: var(--live); }
+.arrowOut { color: var(--gold); }
+
+.action { color: var(--text); }
+
+.detail {
+  color: var(--muted);
+  max-width: 22ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

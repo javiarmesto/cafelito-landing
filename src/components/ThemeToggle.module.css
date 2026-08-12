@@ -38,6 +38,9 @@
   text-align: center;
   opacity: 0.4;
   transition: opacity 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .iconActive { opacity: 0; }

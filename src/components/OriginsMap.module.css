@@ -49,7 +49,7 @@
   max-width: 1100px;
   margin: 0 auto;
   position: relative;
-  filter: drop-shadow(0 30px 80px rgba(200,169,126,0.08));
+  filter: drop-shadow(0 30px 80px var(--gold-faint));
 }
 
 .map {
@@ -59,8 +59,8 @@
 }
 
 .continent {
-  fill: rgba(200,169,126,0.06);
-  stroke: rgba(200,169,126,0.18);
+  fill: var(--gold-faint);
+  stroke: var(--border);
   stroke-width: 0.6;
   transition: fill 0.4s;
 }
@@ -70,7 +70,7 @@
 }
 
 .route {
-  stroke: rgba(200,169,126,0.35);
+  stroke: var(--muted);
   stroke-width: 0.8;
   stroke-dasharray: 3 4;
   fill: none;
@@ -123,7 +123,7 @@
 
 .hub {
   fill: var(--cream);
-  filter: drop-shadow(0 0 6px rgba(200,169,126,0.6));
+  filter: drop-shadow(0 0 6px var(--muted));
 }
 
 .hubLabel {
@@ -156,7 +156,7 @@
   height: 8px;
   border-radius: 50%;
   background: var(--gold);
-  box-shadow: 0 0 10px rgba(200,169,126,0.6);
+  box-shadow: 0 0 10px var(--muted);
 }
 
 .legendDotHub {

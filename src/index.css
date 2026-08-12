@@ -1,68 +1,74 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:wght@400;500&family=JetBrains+Mono:wght@300;400&display=swap');
 
 /* ── Theme: DARK (default) ──────────────────── */
+/* Paleta «El mostrador»: negro cálido de tostadero, cobre como acento
+   y verde de grano crudo reservado SOLO para datos en vivo de BC. */
 :root,
 :root[data-theme="dark"] {
-  --bg:           #0F0804;
-  --bg2:          #1A0F0A;
-  --bg3:          #241510;
-  --gold:         #C8A97E;
-  --gold-strong:  #E0C18E;
-  --gold-dim:     rgba(200,169,126,0.18);
-  --gold-faint:   rgba(200,169,126,0.07);
-  --border:       rgba(200,169,126,0.12);
-  --text:         #E8D5B7;
-  --muted:        rgba(200,169,126,0.75);
-  --espresso:     #6B4226;
-  --cream:        #F5E6D3;
-  --surface:      rgba(26,15,10,0.55);
-  --surface-strong: rgba(36,21,16,0.85);
-  --hero-img-filter: brightness(1) saturate(1);
+  --bg:           #12100E;
+  --bg2:          #17140F;
+  --bg3:          #1E1A14;
+  --gold:         #C2703A;
+  --gold-strong:  #E08A4C;
+  --gold-dim:     rgba(194,112,58,0.22);
+  --gold-faint:   rgba(194,112,58,0.09);
+  --border:       rgba(237,230,218,0.14);
+  --text:         #EDE6DA;
+  --muted:        rgba(237,230,218,0.66);
+  --espresso:     #6B3A1E;
+  --cream:        #F7F1E6;
+  --live:         #7FA96B;
+  --live-faint:   rgba(127,169,107,0.14);
+  --surface:      rgba(23,20,15,0.62);
+  --surface-strong: rgba(23,20,15,0.90);
+  --hero-img-filter: brightness(0.95) saturate(0.95);
   --hero-overlay: linear-gradient(90deg,
-                    rgba(15,8,4,0.95) 0%,
-                    rgba(15,8,4,0.78) 30%,
-                    rgba(15,8,4,0.35) 55%,
-                    rgba(15,8,4,0.10) 80%,
-                    rgba(15,8,4,0.25) 100%),
+                    rgba(18,16,14,0.96) 0%,
+                    rgba(18,16,14,0.80) 30%,
+                    rgba(18,16,14,0.38) 55%,
+                    rgba(18,16,14,0.10) 80%,
+                    rgba(18,16,14,0.28) 100%),
                   linear-gradient(180deg,
-                    rgba(15,8,4,0.55) 0%,
+                    rgba(18,16,14,0.55) 0%,
                     transparent 25%,
                     transparent 75%,
-                    rgba(15,8,4,0.85) 100%);
+                    rgba(18,16,14,0.88) 100%);
   --grain-opacity: 0.025;
-  --shadow-card: 0 10px 28px rgba(0,0,0,0.35);
+  --shadow-card: 0 10px 28px rgba(0,0,0,0.42);
 }
 
 /* ── Theme: LIGHT (Cream / kraft paper) ────── */
 :root[data-theme="light"] {
-  --bg:           #F5E6D3;
-  --bg2:          #EAD7BD;
-  --bg3:          #DCC4A0;
-  --gold:         #6B4226;
-  --gold-strong:  #4A2D18;
-  --gold-dim:     rgba(107,66,38,0.28);
-  --gold-faint:   rgba(107,66,38,0.10);
-  --border:       rgba(107,66,38,0.25);
-  --text:         #2A1507;
-  --muted:        rgba(42,21,7,0.78);
-  --espresso:     #6B4226;
-  --cream:        #FFF8EC;
-  --surface:      rgba(255,248,236,0.78);
-  --surface-strong: rgba(255,248,236,0.96);
-  --hero-img-filter: brightness(1.08) saturate(0.85) contrast(0.95);
+  --bg:           #EFEAE1;
+  --bg2:          #F7F3EB;
+  --bg3:          #FFFCF6;
+  --gold:         #9A4E20;
+  --gold-strong:  #7A3B16;
+  --gold-dim:     rgba(154,78,32,0.28);
+  --gold-faint:   rgba(154,78,32,0.09);
+  --border:       rgba(26,21,18,0.16);
+  --text:         #1A1512;
+  --muted:        rgba(26,21,18,0.66);
+  --espresso:     #7A3B16;
+  --cream:        #FFFCF6;
+  --live:         #4F6138;
+  --live-faint:   rgba(79,97,56,0.14);
+  --surface:      rgba(255,252,246,0.80);
+  --surface-strong: rgba(255,252,246,0.96);
+  --hero-img-filter: brightness(1.06) saturate(0.88) contrast(0.96);
   --hero-overlay: linear-gradient(90deg,
-                    rgba(245,230,211,0.98) 0%,
-                    rgba(245,230,211,0.92) 35%,
-                    rgba(245,230,211,0.55) 60%,
-                    rgba(245,230,211,0.10) 85%,
-                    rgba(245,230,211,0.25) 100%),
+                    rgba(239,234,225,0.98) 0%,
+                    rgba(239,234,225,0.92) 35%,
+                    rgba(239,234,225,0.55) 60%,
+                    rgba(239,234,225,0.10) 85%,
+                    rgba(239,234,225,0.25) 100%),
                   linear-gradient(180deg,
-                    rgba(245,230,211,0.55) 0%,
+                    rgba(239,234,225,0.55) 0%,
                     transparent 25%,
                     transparent 75%,
-                    rgba(245,230,211,0.85) 100%);
+                    rgba(239,234,225,0.88) 100%);
   --grain-opacity: 0.04;
-  --shadow-card: 0 20px 60px rgba(107,66,38,0.22);
+  --shadow-card: 0 20px 60px rgba(26,21,18,0.16);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

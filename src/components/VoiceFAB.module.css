@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(135deg, #8B5E3C, #C8A97E);
+  background: linear-gradient(135deg, #8B5E3C, var(--gold));
   border: none;
   border-radius: 999px;
   padding: 14px 22px 14px 16px;
@@ -14,7 +14,7 @@
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 15px;
   font-weight: 600;
-  box-shadow: 0 8px 28px rgba(200,169,126,0.3);
+  box-shadow: 0 8px 28px var(--muted);
   transition: all 0.25s;
   cursor: pointer;
   position: fixed;
@@ -22,18 +22,22 @@
 
 .fab:hover {
   transform: translateY(-3px);
-  box-shadow: 0 14px 40px rgba(200,169,126,0.4);
+  box-shadow: 0 14px 40px var(--muted);
 }
 
 .fab.active {
   padding: 14px 18px;
-  background: rgba(200,169,126,0.12);
-  border: 1px solid rgba(200,169,126,0.2);
+  background: var(--border);
+  border: 1px solid var(--gold-dim);
   color: rgba(200,169,126,0.7);
   box-shadow: none;
 }
 
-.icon { font-size: 18px; }
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .label { white-space: nowrap; }
 
@@ -41,7 +45,7 @@
   position: absolute;
   inset: -4px;
   border-radius: 999px;
-  border: 2px solid rgba(200,169,126,0.4);
+  border: 2px solid var(--muted);
   animation: pulseRing 2s ease-out infinite;
   pointer-events: none;
 }

@@ -1,18 +1,18 @@
 // src/components/VoiceFAB.jsx
-// Floating Action Button — siempre visible en la esquina
+// Acceso permanente al mostrador desde la tienda
+import { IconMic } from './Icons.jsx'
 import styles from './VoiceFAB.module.css'
 
-export default function VoiceFAB({ onClick, isOpen }) {
+export default function VoiceFAB({ onClick }) {
   return (
     <button
-      className={`${styles.fab} ${isOpen ? styles.active : ''}`}
+      className={styles.fab}
       onClick={onClick}
-      title="Hablar con Cafelito"
-      aria-label="Abrir asistente de voz"
+      aria-label="Hablar con Cafelito"
     >
-      <span className={styles.icon}>{isOpen ? '✕' : '☕'}</span>
-      {!isOpen && <span className={styles.label}>Cafelito</span>}
-      {!isOpen && <div className={styles.pulse} />}
+      <span className={styles.icon}><IconMic size={19} /></span>
+      <span className={styles.label}>Cafelito</span>
+      <span className={styles.pulse} aria-hidden="true" />
     </button>
   )
 }
