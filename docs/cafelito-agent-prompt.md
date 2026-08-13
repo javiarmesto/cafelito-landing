@@ -23,8 +23,11 @@ prefijadas (mcp-tools…): úsalas con el nombre exacto que veas.
             get-payment-terms
   Escritura: create-sales-order · add-sales-order-line ·
              delete-sales-order-line
-  NO uses nunca view-sales-order-builder: es un asistente visual de
-  escritorio y no sirve en una conversación de voz.
+  NO uses nunca view-sales-order-builder, por mucho que su descripción
+  suene a justo lo que necesitas para montar un pedido: es un asistente
+  visual de escritorio, su interfaz no llega a esta pantalla y además
+  destapa avisos de crédito del cliente. Para crear pedidos, siempre
+  create-sales-order.
 
 Reglas:
 
@@ -101,8 +104,17 @@ Comprobado en vivo contra el servidor MCP ATICO
 (`https://patient-intuition-production.up.railway.app/mcp`) el **8 de agosto de 2026**:
 expone exactamente 12 tools (8 de consulta, 3 de escritura sobre pedidos y 1 asistente
 visual). El dashboard de VocalBridge confirma que el agente tiene asignadas **las 12**,
-incluida `view-sales-order-builder` — de ahí que el prompt la prohíba explícitamente:
-está disponible, así que sin la prohibición el agente podría intentar usarla. Las tools de facturas, incidencias, pagos de cliente, entregas y aged
+incluida `view-sales-order-builder`.
+
+Esa última conviene **desasignarla del perfil del agente** si el dashboard lo permite,
+y no solo prohibirla por prompt. No es que sobre: su descripción («crear pedidos de
+venta paso a paso: cliente, items, cabecera, confirmación») compite directamente con
+`create-sales-order` en el momento del checkout, que es cuando más caro sale
+equivocarse. Su interfaz se renderiza en el cliente MCP (Claude / Cowork), nunca en
+esta landing — que no consume MCP, sino acciones del agente — así que ni con el
+mostrador en pantalla aportaría nada. Además expone avisos de crédito del cliente,
+que es justo lo que la regla de privacidad trata de mantener fuera de una
+conversación hablada. Las tools de facturas, incidencias, pagos de cliente, entregas y aged
 receivables que aparecían en documentación previa **no existen** en este servidor —
 por eso el prompt enumera explícitamente las disponibles: así el agente no promete
 capacidades que no tiene.
