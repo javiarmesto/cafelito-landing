@@ -85,6 +85,28 @@ Reglas:
 
 ---
 
+## Client Actions — hay que declararlas, no basta el prompt
+
+Las acciones no funcionan solo por mencionarlas en el system prompt. El agente las emite
+llamando a `trigger_client_action`, que **únicamente conoce las acciones declaradas en su
+configuración**. Con el dashboard mostrando «No client actions configured», el agente
+conversa y usa MCP con normalidad pero la pantalla nunca reacciona.
+
+Se aplican desde `config/client-actions.json` (versionado en este repo):
+
+```bash
+vb config set --client-actions-file config/client-actions.json
+vb config get client-actions          # verificar que quedaron las 8
+```
+
+El campo `behavior` de las acciones **app → agente** es crítico:
+
+- `notify` — el evento entra en contexto en silencio. Es lo que necesitan `view_product` y
+  `cart_updated`: llegan en cada cambio del carrito, y con `respond` el agente se pondría a
+  hablar cada vez que el usuario toca una cantidad.
+- `respond` — el agente contesta al recibirlo. Solo `checkout_cart` lo necesita: ahí sí
+  queremos que arranque el flujo de pedido.
+
 ## Referencia rápida de acciones (contrato con la web)
 
 | Dirección | Acción | Payload |

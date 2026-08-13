@@ -117,6 +117,10 @@ sendAction('view_product', { id, name, price })
 - Sin llamada activa, el botón de checkout del drawer abre el widget de voz
 - El system prompt del agente que gobierna todo esto está versionado en `docs/cafelito-agent-prompt.md`
   (pegarlo en el dashboard con `/vocal-bridge:prompt`)
+- **Las acciones hay que declararlas en el agente**, no basta con nombrarlas en el prompt:
+  `config/client-actions.json` + `vb config set --client-actions-file config/client-actions.json`.
+  El `behavior` de las app→agente importa: `cart_updated` y `view_product` son `notify`
+  (contexto silencioso), solo `checkout_cart` es `respond`
 
 El `VocalBridgeProvider` está en `App.jsx` con `options={{ auth: { tokenUrl: TOKEN_URL } }}`.
 `TOKEN_URL` viene de `import.meta.env.VITE_TOKEN_URL` (`.env` local).

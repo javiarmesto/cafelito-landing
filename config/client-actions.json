@@ -1,0 +1,45 @@
+[
+  {
+    "name": "show_product",
+    "description": "Resalta un café en el catálogo de la web y lo sube al frente. Úsala al recomendar un origen visible. Payload: { id | bc_item_no | name }.",
+    "direction": "agent_to_app"
+  },
+  {
+    "name": "add_to_cart",
+    "description": "Añade un café al carrito del usuario. Payload: { id | bc_item_no | name, qty }.",
+    "direction": "agent_to_app"
+  },
+  {
+    "name": "remove_from_cart",
+    "description": "Quita un café del carrito. Payload: { id | bc_item_no | name }.",
+    "direction": "agent_to_app"
+  },
+  {
+    "name": "clear_cart",
+    "description": "Vacía el carrito por completo. Payload vacío.",
+    "direction": "agent_to_app"
+  },
+  {
+    "name": "order_created",
+    "description": "Confirma en pantalla que el pedido se creó en Business Central: vacía el carrito y muestra el aviso. Payload: { order_number, total }.",
+    "direction": "agent_to_app"
+  },
+  {
+    "name": "view_product",
+    "description": "El usuario está mirando la ficha de un café en la web. Contexto silencioso para personalizar la recomendación. Payload: { id, bc_item_no, name, price }.",
+    "direction": "app_to_agent",
+    "behavior": "notify"
+  },
+  {
+    "name": "cart_updated",
+    "description": "Estado actual del carrito tras un cambio. Contexto silencioso: nunca respondas solo por recibirlo. Payload: { items: [{ id, bc_item_no, name, qty, price }], total }.",
+    "direction": "app_to_agent",
+    "behavior": "notify"
+  },
+  {
+    "name": "checkout_cart",
+    "description": "El usuario ha pulsado pedir en el carrito. Arranca el flujo de pedido: identifica al cliente, repite el pedido, pide confirmación y crea el pedido en BC. Payload: { items: [{ id, bc_item_no, name, qty, price }], total }.",
+    "direction": "app_to_agent",
+    "behavior": "respond"
+  }
+]
