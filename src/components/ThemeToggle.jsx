@@ -1,5 +1,6 @@
 // src/components/ThemeToggle.jsx
 import { useEffect, useState } from 'react'
+import { IconSun, IconMoon } from './Icons.jsx'
 import styles from './ThemeToggle.module.css'
 
 const STORAGE_KEY = 'cafelito-theme'
@@ -29,10 +30,14 @@ export default function ThemeToggle() {
       aria-label={`Cambiar a tema ${isLight ? 'oscuro' : 'claro'}`}
       title={isLight ? 'Modo oscuro' : 'Modo claro'}
     >
-      <span className={`${styles.icon} ${!isLight ? styles.iconActive : ''}`}>☀</span>
-      <span className={`${styles.icon} ${isLight ? styles.iconActive : ''}`}>☾</span>
+      <span className={`${styles.icon} ${!isLight ? styles.iconActive : ''}`}>
+        <IconSun size={12} />
+      </span>
+      <span className={`${styles.icon} ${isLight ? styles.iconActive : ''}`}>
+        <IconMoon size={12} />
+      </span>
       <span className={`${styles.knob} ${isLight ? styles.knobLight : ''}`}>
-        {isLight ? '☀' : '☾'}
+        {isLight ? <IconSun size={12} /> : <IconMoon size={12} />}
       </span>
     </button>
   )

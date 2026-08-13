@@ -3,7 +3,7 @@ import styles from './CoffeeCard.module.css'
 
 function IntensityDots({ value }) {
   return (
-    <div className={styles.dots}>
+    <div className={styles.dots} role="img" aria-label={`Intensidad ${value} de 5`}>
       {[1, 2, 3, 4, 5].map(i => (
         <div key={i} className={`${styles.dot} ${i <= value ? styles.active : ''}`} />
       ))}
@@ -12,62 +12,64 @@ function IntensityDots({ value }) {
 }
 
 export default function CoffeeCard({ coffee, highlighted = false, onView, onAdd }) {
-  const lowStock = coffee.stock < 20
+  const lowStock = coffee.stock > 0 && coffee.stock < 20
+  const soldOut  = coffee.stock === 0
 
   return (
-    <div
+    <article
       id={`coffee-${coffee.id}`}
       className={`${styles.card} ${highlighted ? styles.highlighted : ''}`}
-      onClick={() => onView?.(coffee)}
     >
-      {/* Background gradient */}
-      <div className={styles.bg} style={{ background: coffee.bg }} />
+      <div className={styles.bg} style={{ background: coffee.bg }} aria-hidden="true" />
 
-      {/* Type badge */}
       <div className={styles.typeBadge}>
-        {coffee.type === 'Whole Decaf Beans' ? '🌙 Decaf' : '☀️ Tostado'}
+        {coffee.type === 'Whole Decaf Beans' ? 'Descafeinado' : 'Tueste medio'}
       </div>
 
-      {/* Stock warning */}
-      {lowStock && (
-        <div className={styles.stockBadge}>
-          ⚡ Últimas {coffee.stock} ud.
-        </div>
+      {soldOut ? (
+        <div className={styles.soldBadge}>Agotado</div>
+      ) : lowStock && (
+        <div className={styles.stockBadge}>Últimas {coffee.stock} ud.</div>
       )}
 
-      <div className={styles.body}>
-        <div className={styles.flag}>{coffee.emoji}</div>
-        <h3 className={styles.name}>{coffee.name}</h3>
-        <p className={styles.notes}>{coffee.notes}</p>
+      <button
+        className={styles.body}
+        onClick={() => onView?.(coffee)}
+        aria-label={`Ver detalle de ${coffee.name}`}
+      >
+        <span className={styles.origin}>{coffee.region}</span>
+        <span className={styles.name}>{coffee.name}</span>
+        <span className={styles.notes}>{coffee.notes}</span>
 
-        <div className={styles.meta}>
-          <div className={styles.metaRow}>
+        <span className={styles.meta}>
+          <span className={styles.metaRow}>
             <span className={styles.metaLabel}>Intensidad</span>
             <IntensityDots value={coffee.intensity} />
-          </div>
-          <div className={styles.metaRow}>
+          </span>
+          <span className={styles.metaRow}>
             <span className={styles.metaLabel}>Acidez</span>
             <span className={styles.metaVal}>{coffee.acidity}</span>
-          </div>
-          <div className={styles.metaRow}>
+          </span>
+          <span className={styles.metaRow}>
             <span className={styles.metaLabel}>Cuerpo</span>
             <span className={styles.metaVal}>{coffee.body}</span>
-          </div>
-        </div>
-      </div>
+          </span>
+        </span>
+      </button>
 
       <div className={styles.footer}>
         <div className={styles.price}>
-          {coffee.price.toFixed(2)} €
+          {coffee.price.toFixed(2).replace('.', ',')} €
           <span className={styles.per}> / 250g</span>
         </div>
         <button
           className={styles.btn}
-          onClick={e => { e.stopPropagation(); onAdd?.(coffee) }}
+          onClick={() => onAdd?.(coffee)}
+          disabled={soldOut}
         >
           Añadir
         </button>
       </div>
-    </div>
+    </article>
   )
 }

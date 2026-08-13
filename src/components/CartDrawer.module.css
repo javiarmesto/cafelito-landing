@@ -65,7 +65,7 @@
   text-align: center;
 }
 
-.emptyIcon { font-size: 40px; opacity: 0.5; }
+.emptyIcon { color: var(--muted); opacity: 0.6; }
 
 .emptyText {
   font-size: 14px;
@@ -88,7 +88,18 @@
   border-bottom: 1px solid var(--gold-faint);
 }
 
-.itemEmoji { font-size: 24px; flex-shrink: 0; }
+.itemEmoji {
+  flex-shrink: 0;
+  width: 34px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 0;
+  text-align: center;
+}
 
 .itemInfo { flex: 1; min-width: 0; }
 
@@ -135,6 +146,7 @@
 }
 
 .itemTotal {
+  font-variant-numeric: tabular-nums;
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   color: var(--gold);
@@ -177,6 +189,7 @@
 }
 
 .totalVal {
+  font-variant-numeric: tabular-nums;
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 24px;
   font-weight: 700;
@@ -184,7 +197,11 @@
 }
 
 .checkoutBtn {
-  background: linear-gradient(135deg, var(--espresso), var(--gold));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--gold);
   border: none;
   border-radius: 999px;
   color: var(--cream);

@@ -1,4 +1,5 @@
 // src/components/HeroVoiceCard.jsx
+import { IconMic } from './Icons.jsx'
 import styles from './HeroVoiceCard.module.css'
 
 const SUGGESTIONS = [
@@ -20,7 +21,7 @@ export default function HeroVoiceCard({ onActivate }) {
       >
         <span className={styles.pulseRing} />
         <span className={`${styles.pulseRing} ${styles.pulseRing2}`} />
-        ☕
+        <IconMic size={26} />
       </button>
 
       <div className={styles.label}>Pulsa y cuéntame</div>

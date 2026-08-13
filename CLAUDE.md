@@ -155,15 +155,30 @@ El backend (`cafelito-backend`) debe estar corriendo en `localhost:3001` para qu
 - **Mode**: `openai_concierge`
 - **Greeting**: "¡Buenas! Soy tu asesor de café. Cuéntame, ¿qué buscas — algo con mucho cuerpo, suave, sin cafeína...? Te ayudo a dar con el tuyo."
 - **Idioma**: Español de España, tono andaluz natural
-- **Herramientas BC MCP activas**:
-  - `get-items` — catálogo (filtra los que empiezan por `W`)
-  - `get-customers` / `get-customer`
-  - `get-sales-invoices` / `get-sales-invoice`
-  - `get-customer-payments` / `create-customer-payment`
-  - `create-incident` / `get-incidents`
-  - `validate-customer-support-status`
-  - `analyze-aged-receivables`
-  - `get-deliveries` / `create-delivery`
+### Herramientas BC MCP (servidor ATICO)
+
+Servidor: `https://patient-intuition-production.up.railway.app/mcp`
+Inventario **verificado en vivo** contra el servidor y confirmado en el dashboard
+del agente — 12 tools, ninguna más (en el dashboard aparecen prefijadas, `mcp-tools…`):
+
+| Tool | Tipo | Uso en Cafelito |
+|---|---|---|
+| `get-items` | lectura | Catálogo (default prefijo `W`); filtros por prefijo y descripción |
+| `get-item` | lectura | Detalle de un item por número (ej. `WRB-1000`) |
+| `get-customers` / `get-customer` | lectura | Identificar al cliente antes del pedido ⚠️ devuelve balances |
+| `get-sales-orders` / `get-sales-order` | lectura | Pedidos anteriores y verificación tras crear uno |
+| `get-currencies` / `get-payment-terms` | lectura | Maestros para la cabecera del pedido |
+| `create-sales-order` | **escritura** | Crea el pedido con sus líneas (`item_number` = `bcItemNo`) |
+| `add-sales-order-line` | **escritura** | Añadir línea a un pedido existente |
+| `delete-sales-order-line` | **escritura** | Quitar línea por número de secuencia |
+| `view-sales-order-builder` | UI | Asistente **visual** — no apto para voz, no debe usarlo el agente |
+
+> Las tools de facturas, incidencias, pagos, entregas y aged receivables que figuraban
+> aquí antes **no existen** en este servidor. Si algún día se añaden, actualizar esta
+> tabla y `docs/cafelito-agent-prompt.md` a la vez.
+>
+> Cafelito tiene asignadas las 12, `view-sales-order-builder` incluida: por eso el
+> prompt de `docs/cafelito-agent-prompt.md` la prohíbe de forma explícita.
 
 ---
 

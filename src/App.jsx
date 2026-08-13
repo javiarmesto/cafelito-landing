@@ -1,90 +1,94 @@
 // src/App.jsx
 // ─────────────────────────────────────────────
-// TOKEN_URL apunta al backend Express que ya tienes.
-// En desarrollo: http://localhost:3001/api/voice-token
-// En producción: https://tu-dominio.com/api/voice-token
+// Dos vistas:
+//   · 'shop'    → la tienda (hero, orígenes, catálogo)
+//   · 'counter' → «el mostrador», donde vive la conversación
+//
+// Al abrir la voz se entra al mostrador: la conversación
+// deja de ser un modal que tapa la tienda y pasa a
+// conducirla.
 // ─────────────────────────────────────────────
 import { useState } from 'react'
 import { VocalBridgeProvider } from '@vocalbridgeai/react'
 import { CartProvider } from './context/CartContext.jsx'
 import { CatalogProvider } from './context/CatalogContext.jsx'
+import { TelemetryProvider } from './context/TelemetryContext.jsx'
 import Hero         from './components/Hero.jsx'
 import OriginsMap   from './components/OriginsMap.jsx'
 import Catalogue    from './components/Catalogue.jsx'
 import ThemeToggle  from './components/ThemeToggle.jsx'
-import VoiceWidget from './components/VoiceWidget.jsx'
-import VoiceFAB  from './components/VoiceFAB.jsx'
-import CartButton from './components/CartButton.jsx'
-import CartDrawer from './components/CartDrawer.jsx'
+import Counter      from './components/Counter.jsx'
+import VoiceFAB     from './components/VoiceFAB.jsx'
+import CartButton   from './components/CartButton.jsx'
+import CartDrawer   from './components/CartDrawer.jsx'
 import ProductDetail from './components/ProductDetail.jsx'
 import AgentCartBridge from './components/AgentCartBridge.jsx'
-import OrderToast from './components/OrderToast.jsx'
+import SessionPill  from './components/SessionPill.jsx'
+import OrderToast   from './components/OrderToast.jsx'
+import { IconBean } from './components/Icons.jsx'
+import styles from './App.module.css'
 import './index.css'
 
 const TOKEN_URL = import.meta.env.VITE_TOKEN_URL || 'http://localhost:3001/api/voice-token'
 
 export default function App() {
-  const [widgetOpen, setWidgetOpen] = useState(false)
+  return (
+    <VocalBridgeProvider options={{ auth: { tokenUrl: TOKEN_URL } }}>
+      <CatalogProvider>
+        <TelemetryProvider>
+          <CartProvider>
+            <Shell />
+          </CartProvider>
+        </TelemetryProvider>
+      </CatalogProvider>
+    </VocalBridgeProvider>
+  )
+}
+
+function Shell() {
+  const [view, setView] = useState('shop')
   const [cartOpen, setCartOpen] = useState(false)
   const [selectedCoffee, setSelectedCoffee] = useState(null)
 
   return (
-    <VocalBridgeProvider options={{ auth: { tokenUrl: TOKEN_URL } }}>
-    <CatalogProvider>
-    <CartProvider>
+    <>
       <AgentCartBridge />
 
-      {/* Navbar */}
-      <nav style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
-        padding: '14px 32px',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        background: 'var(--surface-strong)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        borderBottom: '1px solid var(--border)',
-      }}>
-        <div style={{
-          fontFamily: "'Playfair Display', Georgia, serif",
-          fontSize: 20, fontWeight: 700, color: 'var(--gold)',
-        }}>
-          ☕ Cafelito
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-          <span style={{
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: 11, color: 'var(--muted)',
-            letterSpacing: '0.08em',
-          }}>
-            single origin · specialty coffee
-          </span>
-          <CartButton onClick={() => setCartOpen(o => !o)} />
-          <ThemeToggle />
-        </div>
-      </nav>
+      {view === 'counter' ? (
+        <Counter
+          onExit={() => setView('shop')}
+          onOpenCart={() => setCartOpen(true)}
+          onSelectCoffee={setSelectedCoffee}
+        />
+      ) : (
+        <>
+          <nav className={styles.nav}>
+            <span className={styles.brand}>
+              <IconBean size={17} />
+              Cafelito
+            </span>
 
-      {/* Page */}
-      <Hero onChatOpen={() => setWidgetOpen(true)} />
-      <OriginsMap />
-      <Catalogue onSelect={setSelectedCoffee} />
+            <div className={styles.navRight}>
+              <span className={styles.tagline}>single origin · specialty coffee</span>
+              <SessionPill onResume={() => setView('counter')} />
+              <CartButton onClick={() => setCartOpen(true)} />
+              <ThemeToggle />
+            </div>
+          </nav>
 
-      {/* Footer */}
-      <footer style={{
-        position: 'relative', zIndex: 1,
-        borderTop: '1px solid var(--border)',
-        padding: '28px 48px',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        flexWrap: 'wrap', gap: 12,
-      }}>
-        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, color: 'var(--muted)' }}>
-          © 2026 Cafelito · powered by VocalBridge AI + Business Central
-        </span>
-        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, color: 'var(--muted)', opacity: 0.7 }}>
-          showcase demo · VS Sistemas
-        </span>
-      </footer>
+          <Hero onChatOpen={() => setView('counter')} />
+          <OriginsMap />
+          <Catalogue onSelect={setSelectedCoffee} />
 
-      {/* Product detail (modal) */}
+          <footer className={styles.footer}>
+            <span>© 2026 Cafelito · VocalBridge AI + Business Central</span>
+            <span className={styles.footerDim}>showcase demo · VS Sistemas</span>
+          </footer>
+
+          <VoiceFAB onClick={() => setView('counter')} />
+        </>
+      )}
+
       {selectedCoffee && (
         <ProductDetail
           coffee={selectedCoffee}
@@ -92,30 +96,14 @@ export default function App() {
         />
       )}
 
-      {/* Cart drawer */}
       {cartOpen && (
         <CartDrawer
           onClose={() => setCartOpen(false)}
-          onOpenVoice={() => { setCartOpen(false); setWidgetOpen(true) }}
+          onOpenVoice={() => { setCartOpen(false); setView('counter') }}
         />
       )}
 
-      {/* Voice widget (modal) */}
-      {widgetOpen && (
-        <VoiceWidget onClose={() => setWidgetOpen(false)} />
-      )}
-
-      {/* Confirmación de pedido creado en BC */}
       <OrderToast />
-
-      {/* Floating button */}
-      <VoiceFAB
-        onClick={() => setWidgetOpen(o => !o)}
-        isOpen={widgetOpen}
-      />
-
-    </CartProvider>
-    </CatalogProvider>
-    </VocalBridgeProvider>
+    </>
   )
 }

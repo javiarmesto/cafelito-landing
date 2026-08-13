@@ -1,4 +1,5 @@
 // src/components/Hero.jsx
+import { IconMic } from './Icons.jsx'
 import styles from './Hero.module.css'
 import HeroVoiceCard from './HeroVoiceCard.jsx'
 
@@ -23,12 +24,12 @@ export default function Hero({ onChatOpen }) {
 
         <p className={styles.subtitle}>
           Habla con Cafelito, nuestro asesor de voz, y descubre el origen
-          perfecto para tu paladar. Granos de especialidad de 8 orígenes, entregados en casa.
+          perfecto para tu paladar. Granos de especialidad, con stock consultado en tiempo real.
         </p>
 
         <div className={styles.actions}>
           <button className={styles.btnPrimary} onClick={onChatOpen}>
-            <span>☕</span> Hablar con Cafelito
+            <IconMic size={17} /> Hablar con Cafelito
           </button>
           <a href="#catalogue" className={styles.btnGhost}>
             Ver catálogo ↓
@@ -36,8 +37,8 @@ export default function Hero({ onChatOpen }) {
         </div>
 
         <div className={styles.origins}>
-          {['🇨🇴', '🇧🇷', '🇪🇹', '🇰🇪', '🇲🇽', '🇨🇷', '🇮🇩', '🌺'].map((f, i) => (
-            <span key={i} className={styles.flag}>{f}</span>
+          {['COL', 'BRA', 'ETH', 'KEN', 'MEX', 'CRI', 'IDN', 'HAW'].map(code => (
+            <span key={code} className={styles.flag}>{code}</span>
           ))}
         </div>
       </div>

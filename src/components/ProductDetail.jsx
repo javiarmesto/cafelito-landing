@@ -6,6 +6,7 @@
 // ─────────────────────────────────────────────
 import { useEffect } from 'react'
 import { useCart } from '../context/CartContext.jsx'
+import { IconClose } from './Icons.jsx'
 import styles from './ProductDetail.module.css'
 
 function IntensityDots({ value }) {
@@ -35,13 +36,13 @@ export default function ProductDetail({ coffee, onClose }) {
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={e => e.stopPropagation()}>
         <div className={styles.banner} style={{ background: coffee.bg }}>
-          <span className={styles.bannerEmoji}>{coffee.emoji}</span>
-          <button className={styles.closeBtn} onClick={onClose}>✕</button>
+          <span className={styles.bannerEmoji}>{coffee.region}</span>
+          <button className={styles.closeBtn} onClick={onClose} aria-label="Cerrar detalle"><IconClose size={14} /></button>
         </div>
 
         <div className={styles.body}>
           <div className={styles.typeLabel}>
-            {coffee.type === 'Whole Decaf Beans' ? '🌙 Decaf' : '☀️ Tostado'} · {coffee.id}
+            {coffee.type === 'Whole Decaf Beans' ? 'Descafeinado' : 'Tueste medio'} · {coffee.bcItemNo}
           </div>
           <h2 className={styles.name}>{coffee.name}</h2>
           <p className={styles.notes}>{coffee.notes}</p>
@@ -76,7 +77,7 @@ export default function ProductDetail({ coffee, onClose }) {
           </div>
 
           {lowStock && (
-            <div className={styles.stockNote}>⚡ Quedan solo {coffee.stock} unidades</div>
+            <div className={styles.stockNote}>Quedan solo {coffee.stock} unidades</div>
           )}
 
           <div className={styles.footer}>

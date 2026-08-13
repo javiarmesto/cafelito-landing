@@ -1,0 +1,31 @@
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--gold-faint);
+  border: 1px solid var(--gold-dim);
+  border-radius: 999px;
+  padding: 6px 13px;
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.pill:hover { background: var(--gold-dim); border-color: var(--gold); }
+
+.dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+
+.live {
+  background: var(--live);
+  box-shadow: 0 0 0 3px var(--live-faint);
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
+}
