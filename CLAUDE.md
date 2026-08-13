@@ -157,7 +157,9 @@ El backend (`cafelito-backend`) debe estar corriendo en `localhost:3001` para qu
 - **Idioma**: Español de España, tono andaluz natural
 ### Herramientas BC MCP (servidor ATICO)
 
-Inventario **verificado en vivo** contra el servidor — 12 tools, ninguna más:
+Servidor: `https://patient-intuition-production.up.railway.app/mcp`
+Inventario **verificado en vivo** contra el servidor y confirmado en el dashboard
+del agente — 12 tools, ninguna más (en el dashboard aparecen prefijadas, `mcp-tools…`):
 
 | Tool | Tipo | Uso en Cafelito |
 |---|---|---|
@@ -175,8 +177,8 @@ Inventario **verificado en vivo** contra el servidor — 12 tools, ninguna más:
 > aquí antes **no existen** en este servidor. Si algún día se añaden, actualizar esta
 > tabla y `docs/cafelito-agent-prompt.md` a la vez.
 >
-> Para confirmar qué subconjunto tiene asignado el agente en el dashboard:
-> `/vocal-bridge:config show`.
+> Cafelito tiene asignadas las 12, `view-sales-order-builder` incluida: por eso el
+> prompt de `docs/cafelito-agent-prompt.md` la prohíbe de forma explícita.
 
 ---
 

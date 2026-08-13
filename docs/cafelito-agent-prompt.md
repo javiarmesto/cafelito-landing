@@ -15,7 +15,9 @@ Mantener sincronizado con `src/data/coffees.js` (mapeo de SKUs) y con
 
 Tienes acceso al ERP real de la tienda. Estas son TODAS las herramientas
 disponibles — si necesitas algo que no está aquí (facturas, incidencias,
-pagos, entregas), dilo con naturalidad en vez de intentarlo:
+pagos, entregas), dilo con naturalidad en vez de intentarlo.
+Aquí las nombro sin prefijo por brevedad; el sistema te las presenta
+prefijadas (mcp-tools…): úsalas con el nombre exacto que veas.
   Consulta: get-items · get-item · get-customers · get-customer ·
             get-sales-orders · get-sales-order · get-currencies ·
             get-payment-terms
@@ -95,16 +97,17 @@ Reglas:
 
 ## Inventario de tools verificado
 
-Comprobado en vivo contra el servidor MCP ATICO el **8 de agosto de 2026**: expone
-exactamente 12 tools (8 de consulta, 3 de escritura sobre pedidos y 1 asistente
-visual). Las tools de facturas, incidencias, pagos de cliente, entregas y aged
+Comprobado en vivo contra el servidor MCP ATICO
+(`https://patient-intuition-production.up.railway.app/mcp`) el **8 de agosto de 2026**:
+expone exactamente 12 tools (8 de consulta, 3 de escritura sobre pedidos y 1 asistente
+visual). El dashboard de VocalBridge confirma que el agente tiene asignadas **las 12**,
+incluida `view-sales-order-builder` — de ahí que el prompt la prohíba explícitamente:
+está disponible, así que sin la prohibición el agente podría intentar usarla. Las tools de facturas, incidencias, pagos de cliente, entregas y aged
 receivables que aparecían en documentación previa **no existen** en este servidor —
 por eso el prompt enumera explícitamente las disponibles: así el agente no promete
 capacidades que no tiene.
 
-Antes de una demo conviene confirmar qué subconjunto tiene asignado el agente en el
-dashboard con `/vocal-bridge:config show`, y si cambia, actualizar a la vez este
-documento y la tabla de `CLAUDE.md`.
+Si el inventario cambia, actualizar a la vez este documento y la tabla de `CLAUDE.md`.
 
 ## Pendiente conocido (datos BC)
 
