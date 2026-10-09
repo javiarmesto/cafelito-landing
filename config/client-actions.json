@@ -21,7 +21,7 @@
   },
   {
     "name": "order_created",
-    "description": "Comunica el número y total obtenidos al verificar el pedido en Business Central. La web conserva el carrito y muestra el aviso pendiente de verificación propia. No uses clear_cart como sustituto de un recibo verificado. Payload: { order_number, total }.",
+    "description": "Informa del pedido comprobado en BC. La web conserva el carrito hasta verificarlo; no uses clear_cart. Payload: { order_number, total }.",
     "direction": "agent_to_app"
   },
   {
@@ -38,7 +38,7 @@
   },
   {
     "name": "checkout_cart",
-    "description": "El usuario ha pulsado pedir. El total web es orientativo: comprueba disponibilidad, unidad y precio en BC, identifica al cliente y pide confirmación explícita del pedido completo antes de crear nada. Payload: { items: [{ id, bc_item_no, name, qty, price }], total }.",
+    "description": "Pedir desde web: verifica stock, unidad y precio en BC, identifica cliente y exige confirmación explícita antes de crear. Payload: { items: [{ id, bc_item_no, name, qty, price }], total }.",
     "direction": "app_to_agent",
     "behavior": "respond"
   }

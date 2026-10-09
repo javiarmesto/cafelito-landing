@@ -42,6 +42,9 @@ describe('acciones de Cafelito', () => {
     const actions = JSON.parse(readFileSync(new URL('../config/client-actions.json', import.meta.url), 'utf8'))
     assert.equal(actions.length, 8)
     assert.equal(new Set(actions.map(action => action.name)).size, 8)
+    for (const action of actions) {
+      assert.ok(action.description.length > 0 && action.description.length <= 200, `${action.name}: límite de VocalBridge`)
+    }
     assert.equal(actions.find(action => action.name === 'view_product').behavior, 'notify')
     assert.equal(actions.find(action => action.name === 'cart_updated').behavior, 'notify')
     assert.equal(actions.find(action => action.name === 'checkout_cart').behavior, 'respond')
