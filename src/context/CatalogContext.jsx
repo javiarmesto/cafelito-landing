@@ -8,6 +8,7 @@
 // ─────────────────────────────────────────────
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { coffees as staticCoffees } from '../data/coffees.js'
+import { catalogData } from '../data/catalog-policy.js'
 
 const TOKEN_URL = import.meta.env.VITE_TOKEN_URL || 'http://localhost:3001/api/voice-token'
 const CATALOG_URL = TOKEN_URL.replace(/\/api\/voice-token\/?$/, '/api/catalog')
@@ -15,17 +16,14 @@ const CATALOG_URL = TOKEN_URL.replace(/\/api\/voice-token\/?$/, '/api/catalog')
 const CatalogContext = createContext(null)
 
 export function CatalogProvider({ children }) {
-  const [bcStock, setBcStock] = useState(null)   // Map bcItemNo → stock
+  const [catalog, setCatalog] = useState(null)
 
   useEffect(() => {
     const controller = new AbortController()
     fetch(CATALOG_URL, { signal: controller.signal })
       .then(res => (res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`))))
       .then(data => {
-        const stockByNumber = new Map(
-          (data.items || []).map(item => [item.number, item.stock])
-        )
-        setBcStock(stockByNumber)
+        setCatalog(catalogData(data))
       })
       .catch(err => {
         if (err.name !== 'AbortError') {
@@ -35,18 +33,25 @@ export function CatalogProvider({ children }) {
     return () => controller.abort()
   }, [])
 
+  useEffect(() => {
+    if (!catalog?.expiresAt) return
+    const timer = setTimeout(() => setCatalog(current => current === catalog
+      ? { ...current, liveStock: false, expiresAt: null, stockLabel: 'stock de referencia · requiere actualización' } : current), Math.max(0, catalog.expiresAt - Date.now()))
+    return () => clearTimeout(timer)
+  }, [catalog])
+
   const coffees = useMemo(() => {
-    if (!bcStock) return staticCoffees
+    if (!catalog) return staticCoffees
     return staticCoffees.map(coffee =>
-      bcStock.has(coffee.bcItemNo)
-        ? { ...coffee, stock: bcStock.get(coffee.bcItemNo) }
+      catalog.stocks.has(coffee.bcItemNo)
+        ? { ...coffee, stock: catalog.stocks.get(coffee.bcItemNo) }
         : coffee
     )
-  }, [bcStock])
+  }, [catalog])
 
   const value = useMemo(
-    () => ({ coffees, liveStock: bcStock !== null }),
-    [coffees, bcStock]
+    () => ({ coffees, liveStock: catalog?.liveStock ?? false, stockLabel: catalog?.stockLabel ?? 'stock de respaldo · sin comprobar' }),
+    [coffees, catalog]
   )
 
   return <CatalogContext.Provider value={value}>{children}</CatalogContext.Provider>

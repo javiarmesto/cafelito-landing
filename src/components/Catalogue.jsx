@@ -19,7 +19,7 @@ export default function Catalogue({ onSelect }) {
   const { state } = useVocalBridge()
   const { onAction, sendAction } = useAgentActions()
   const { addItem } = useCart()
-  const { coffees } = useCatalog()
+  const { coffees, stockLabel } = useCatalog()
   const [highlightedId, setHighlightedId] = useState(null)
   const timerRef = useRef(null)
 
@@ -27,7 +27,7 @@ export default function Catalogue({ onSelect }) {
     return onAction('show_product', payload => {
       const coffee = resolveCoffee(payload)
       if (!coffee) {
-        console.error('[catalogue] show_product sin match:', JSON.stringify(payload))
+        console.error('[catalogue] show_product: referencia no reconocida')
         return
       }
       setHighlightedId(coffee.id)
@@ -60,6 +60,7 @@ export default function Catalogue({ onSelect }) {
           Pregúntale a Cafelito cuál se adapta mejor a tu paladar,
           o explora el catálogo tú mismo.
         </p>
+        <p className={styles.sub}>{stockLabel}. Precios orientativos del catálogo web.</p>
       </div>
 
       <div className={styles.grid}>

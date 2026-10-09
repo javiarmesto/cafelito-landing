@@ -24,7 +24,7 @@ export default function Hero({ onChatOpen }) {
 
         <p className={styles.subtitle}>
           Habla con Cafelito, nuestro asesor de voz, y descubre el origen
-          perfecto para tu paladar. Granos de especialidad, con stock consultado en tiempo real.
+          perfecto para tu paladar. Prepara tu carrito; disponibilidad y total final se comprueban antes de confirmar.
         </p>
 
         <div className={styles.actions}>
