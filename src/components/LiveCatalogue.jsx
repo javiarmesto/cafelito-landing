@@ -21,7 +21,7 @@ function formatPrice(n) {
 }
 
 export default function LiveCatalogue({ onSelect }) {
-  const { coffees, liveStock } = useCatalog()
+  const { coffees, liveStock, stockLabel } = useCatalog()
   const { state } = useVocalBridge()
   const { onAction, sendAction } = useAgentActions()
   const { items, addItem } = useCart()
@@ -34,7 +34,7 @@ export default function LiveCatalogue({ onSelect }) {
     return onAction('show_product', payload => {
       const coffee = resolveCoffee(payload)
       if (!coffee) {
-        console.error('[catalogue] show_product sin match:', JSON.stringify(payload))
+        console.error('[catalogue] show_product: referencia no reconocida')
         return
       }
       track('in', 'show_product', coffee.name)
@@ -68,7 +68,7 @@ export default function LiveCatalogue({ onSelect }) {
         <h2 className={styles.title}>Catálogo</h2>
         <span className={`${styles.source} ${liveStock ? styles.sourceLive : ''}`}>
           <span className={styles.sourceDot} aria-hidden="true" />
-          {liveStock ? 'stock en vivo · Business Central' : 'stock de respaldo'}
+          {stockLabel}
         </span>
       </header>
 

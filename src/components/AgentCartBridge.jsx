@@ -8,6 +8,7 @@ import { useEffect, useRef } from 'react'
 import { useAgentActions, useVocalBridge } from '@vocalbridgeai/react'
 import { ConnectionState } from '@vocalbridgeai/sdk'
 import { resolveCoffee } from '../data/coffees.js'
+import { actionQuantity, reportedOrder } from '../data/action-policy.js'
 import { useCart } from '../context/CartContext.jsx'
 import { useTelemetry } from '../context/TelemetryContext.jsx'
 
@@ -21,10 +22,11 @@ export default function AgentCartBridge() {
     return onAction('add_to_cart', payload => {
       const coffee = resolveCoffee(payload)
       if (!coffee) {
-        console.error('[cart] add_to_cart sin match:', JSON.stringify(payload))
+        console.error('[cart] add_to_cart: referencia no reconocida')
         return
       }
-      const qty = Math.max(1, parseInt(payload.qty ?? payload.quantity, 10) || 1)
+      const qty = actionQuantity(payload)
+      if (qty === null) return
       track('in', 'add_to_cart', `${coffee.name} ×${qty}`)
       addItem(coffee.id, qty)
     })
@@ -46,17 +48,15 @@ export default function AgentCartBridge() {
     })
   }, [onAction, clear, track])
 
-  // El agente confirma que el pedido se creó en BC → vaciar carrito + aviso visual
+  // An action alone cannot prove a BC write. Keep the cart pending verification.
   useEffect(() => {
     return onAction('order_created', payload => {
-      track('in', 'order_created', String(payload.order_number ?? ''))
-      setLastOrder({
-        order_number: String(payload.order_number ?? payload.orderNumber ?? ''),
-        total: Number(payload.total) || null,
-      })
-      clear()
+      const order = reportedOrder(payload)
+      if (!order) return
+      track('in', 'order_created', 'pendiente de verificación')
+      setLastOrder(order)
     })
-  }, [onAction, setLastOrder, clear, track])
+  }, [onAction, setLastOrder, track])
 
   // Snapshot del carrito al agente en cada cambio durante la llamada
   const connected = state === ConnectionState.Connected
@@ -72,8 +72,8 @@ export default function AgentCartBridge() {
     })
     if (snapshot === lastSentRef.current) return
     lastSentRef.current = snapshot
-    track('out', 'cart_updated', `${items.length} líneas · ${total.toFixed(2)} €`)
     sendAction('cart_updated', JSON.parse(snapshot))
+      .then(() => track('out', 'cart_updated', `${items.length} líneas`))
       .catch(err => console.error('[cart] cart_updated:', err.message))
   }, [connected, items, total, sendAction, track])
 

@@ -5,7 +5,8 @@
 // al agente (que crea el pedido en BC con
 // create-sales-order); sin llamada, abre el widget.
 // ─────────────────────────────────────────────
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { cartSnapshot, quantityLimit } from '../data/action-policy.js'
 import { useAgentActions, useVocalBridge } from '@vocalbridgeai/react'
 import { ConnectionState } from '@vocalbridgeai/sdk'
 import { useCart } from '../context/CartContext.jsx'
@@ -20,21 +21,46 @@ export default function CartDrawer({ onClose, onOpenVoice }) {
   const { items, count, total, setQty, removeItem, clear } = useCart()
   const { state } = useVocalBridge()
   const { sendAction } = useAgentActions()
-  const [checkoutSent, setCheckoutSent] = useState(false)
+  const [checkout, setCheckout] = useState(null)
+  const busy = useRef(false)
+  const generation = useRef(0)
+  const [error, setError] = useState('')
 
   const connected = state === ConnectionState.Connected
+  const [wasConnected, setWasConnected] = useState(connected)
+  if (wasConnected !== connected) {
+    setWasConnected(connected)
+    setCheckout(null)
+  }
+  useEffect(() => {
+    const run = ++generation.current
+    busy.current = false
+    return () => { generation.current = run + 1; busy.current = false }
+  }, [connected])
+  const snapshot = cartSnapshot(items)
+  const fingerprint = snapshot ? JSON.stringify(snapshot) : ''
+  const checkoutSent = connected && checkout?.status === 'sent' && checkout.fingerprint === fingerprint
+  const sending = checkout?.status === 'sending'
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (!connected) {
       onOpenVoice()
       return
     }
-    sendAction('checkout_cart', {
-      items: items.map(i => ({ id: i.id, bc_item_no: i.bcItemNo, name: i.name, qty: i.qty, price: i.price })),
-      total: Number(total.toFixed(2)),
-    })
-      .then(() => setCheckoutSent(true))
-      .catch(err => console.error('[cart] checkout_cart:', err.message))
+    if (!snapshot || busy.current || checkoutSent) return
+    busy.current = true
+    const run = generation.current
+    setError('')
+    setCheckout({ fingerprint, status: 'sending' })
+    try {
+      await sendAction('checkout_cart', snapshot)
+      if (run === generation.current) setCheckout({ fingerprint, status: 'sent' })
+    } catch {
+      if (run === generation.current) {
+        setCheckout(null)
+        setError('No se pudo compartir el carrito. Puedes volver a intentarlo.')
+      }
+    } finally { if (run === generation.current) busy.current = false }
   }
 
   return (
@@ -70,12 +96,12 @@ export default function CartDrawer({ onClose, onOpenVoice }) {
                     <div className={styles.itemMeta}>{item.bcItemNo} · {formatPrice(item.price)} / 250g</div>
                   </div>
                   <div className={styles.qty}>
-                    <button className={styles.qtyBtn} onClick={() => setQty(item.id, item.qty - 1)}>−</button>
+                    <button className={styles.qtyBtn} disabled={sending} aria-label={`Reducir ${item.name}`} onClick={() => setQty(item.id, item.qty - 1)}>−</button>
                     <span className={styles.qtyVal}>{item.qty}</span>
-                    <button className={styles.qtyBtn} onClick={() => setQty(item.id, item.qty + 1)}>+</button>
+                    <button className={styles.qtyBtn} disabled={sending || item.qty >= quantityLimit(item)} aria-label={`Aumentar ${item.name}`} onClick={() => setQty(item.id, item.qty + 1)}>+</button>
                   </div>
                   <div className={styles.itemTotal}>{formatPrice(item.price * item.qty)}</div>
-                  <button className={styles.removeBtn} onClick={() => removeItem(item.id)} aria-label={`Quitar ${item.name}`}><IconTrash size={14} /></button>
+                  <button className={styles.removeBtn} disabled={sending} onClick={() => removeItem(item.id)} aria-label={`Quitar ${item.name}`}><IconTrash size={14} /></button>
                 </div>
               ))}
             </div>
@@ -91,13 +117,16 @@ export default function CartDrawer({ onClose, onOpenVoice }) {
                   Pedido enviado a Cafelito — confírmalo por voz
                 </div>
               ) : (
-                <button className={styles.checkoutBtn} onClick={handleCheckout}>
+                <button className={styles.checkoutBtn} disabled={sending || !snapshot} onClick={handleCheckout}>
                   <IconMic size={16} />
-                  {connected ? 'Pedir con Cafelito' : 'Habla con Cafelito para pedir'}
+                  {sending ? 'Compartiendo carrito…' : connected ? 'Pedir con Cafelito' : 'Habla con Cafelito para pedir'}
                 </button>
               )}
 
-              <button className={styles.clearBtn} onClick={() => { clear(); setCheckoutSent(false) }}>
+              <p className={styles.sentNote}>Total orientativo de la web. Stock y total final se comprueban en BC antes de confirmar.</p>
+              {!snapshot ? <p role="alert">Revisa las cantidades con el stock de referencia actual.</p> : null}
+              {error ? <p role="alert">{error}</p> : null}
+              <button className={styles.clearBtn} disabled={sending} onClick={() => { clear(); setCheckout(null); setError('') }}>
                 Vaciar carrito
               </button>
             </div>

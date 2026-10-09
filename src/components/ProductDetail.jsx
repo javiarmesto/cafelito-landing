@@ -87,6 +87,7 @@ export default function ProductDetail({ coffee, onClose }) {
             </div>
             <button
               className={styles.addBtn}
+              disabled={coffee.stock === 0}
               onClick={() => { addItem(coffee.id); onClose() }}
             >
               Añadir al carrito

@@ -5,29 +5,23 @@
 // create-sales-order al hacer checkout por voz.
 // ─────────────────────────────────────────────
 import { createContext, useCallback, useContext, useMemo, useState } from 'react'
-import { coffees } from '../data/coffees.js'
+import { useCatalog } from './CatalogContext.jsx'
+import { changeEntries } from '../data/action-policy.js'
 
 const CartContext = createContext(null)
 
 export function CartProvider({ children }) {
+  const { coffees } = useCatalog()
   const [entries, setEntries] = useState([])   // [{ id, qty }]
   const [lastOrder, setLastOrder] = useState(null)   // { order_number, total } del agente
 
   const addItem = useCallback((id, qty = 1) => {
-    setEntries(prev => {
-      const found = prev.find(e => e.id === id)
-      if (found) {
-        return prev.map(e => e.id === id ? { ...e, qty: e.qty + qty } : e)
-      }
-      return [...prev, { id, qty }]
-    })
-  }, [])
+    setEntries(prev => changeEntries(prev, coffees, id, qty, true))
+  }, [coffees])
 
   const setQty = useCallback((id, qty) => {
-    setEntries(prev => qty <= 0
-      ? prev.filter(e => e.id !== id)
-      : prev.map(e => e.id === id ? { ...e, qty } : e))
-  }, [])
+    setEntries(prev => changeEntries(prev, coffees, id, qty))
+  }, [coffees])
 
   const removeItem = useCallback(id => {
     setEntries(prev => prev.filter(e => e.id !== id))
@@ -42,7 +36,7 @@ export function CartProvider({ children }) {
         return coffee ? { ...coffee, qty } : null
       })
       .filter(Boolean),
-    [entries]
+    [entries, coffees]
   )
 
   const count = useMemo(() => items.reduce((sum, i) => sum + i.qty, 0), [items])

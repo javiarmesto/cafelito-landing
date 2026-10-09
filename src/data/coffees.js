@@ -131,15 +131,18 @@ export const coffees = [
 // Resuelve una referencia flexible (id / sku / nombre exacto o parcial)
 // contra el catálogo — usada por las acciones del agente
 export function resolveCoffee(payload = {}) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return null
   const ref = String(
-    payload.id ?? payload.item_id ?? payload.product_id ?? payload.sku ?? payload.name ?? ''
+    payload.id ?? payload.bc_item_no ?? payload.item_id ?? payload.product_id ?? payload.sku ?? payload.name ?? ''
   ).trim().toLowerCase()
   if (!ref) return null
-  return (
+  const exact = (
     coffees.find(c => c.id.toLowerCase() === ref) ||
     coffees.find(c => c.bcItemNo.toLowerCase() === ref) ||
     coffees.find(c => c.name.toLowerCase() === ref) ||
-    coffees.find(c => c.name.toLowerCase().includes(ref)) ||
     null
   )
+  if (exact) return exact
+  const matches = coffees.filter(c => c.name.toLowerCase().includes(ref))
+  return matches.length === 1 ? matches[0] : null
 }

@@ -14,8 +14,8 @@ import styles from './ConversationPanel.module.css'
 // quedaba vacía, y este es el mejor sitio para contar de qué va la demo.
 const CAPABILITIES = [
   ['Te recomienda', 'según cuerpo, acidez o si lo quieres sin cafeína'],
-  ['Consulta stock', 'en tiempo real contra Business Central'],
-  ['Crea el pedido', 'en el ERP, con tus líneas y tu cliente'],
+  ['Aclara disponibilidad', 'consulta Business Central antes de confirmar'],
+  ['Prepara el pedido', 'repasa contigo las líneas, el cliente y el total'],
 ]
 
 const OPENERS = [

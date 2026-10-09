@@ -37,7 +37,7 @@ export default function HeroVoiceCard({ onActivate }) {
       </div>
 
       <p className={styles.hint}>
-        Te recomiendo el café perfecto en segundos, consultando el catálogo en tiempo real.
+        Te ayudo a elegir tu café y a preparar el carrito antes de confirmar disponibilidad y total.
       </p>
 
       <div className={styles.suggestions}>
