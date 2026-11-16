@@ -32,7 +32,7 @@ describe('acciones de Cafelito', () => {
     assert.equal(cartSnapshot([]), null)
     const snapshot = cartSnapshot([item])
     assert.equal(snapshot.items[0].bc_item_no, 'WRB-1000')
-    assert.equal(snapshot.total, 35)
+    assert.equal(snapshot.total, 38)
   })
   it('ni un payload bien formado puede acreditar una operación en BC', () => {
     for (const value of [null, {}, { order_number: '', total: 10 }, { order_number: 'DEMO', total: '10' }, { order_number: 'DEMO', total: Infinity }]) assert.equal(reportedOrder(value), null)

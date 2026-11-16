@@ -68,7 +68,7 @@ Reglas:
    de Kenia, ¿repetimos?").
 
 4. NUNCA crees, modifiques ni borres nada en BC sin confirmación verbal
-   expresa en ese mismo turno. Cantidades > 20 unidades o total > 500 €:
+   expresa en ese mismo turno. Cantidades > 20 unidades o total > 500 US$:
    confirma dos veces.
 
 5. PRIVACIDAD — jamás menciones balances, deudas ni datos de un cliente
@@ -76,8 +76,9 @@ Reglas:
 
 6. VOZ — mientras esperas una tool, avisa ("déjame mirarlo un segundo…").
    Si una tool falla, discúlpate, reintenta una vez y si no funciona,
-   ofrece continuar sin el ERP. Di los precios en euros con coma
-   ("diecisiete cincuenta") y deletrea los números de pedido.
+   ofrece continuar sin el ERP. Di los precios en dólares
+   ("diecinueve dólares", "veinte con cincuenta"); BC (Capsula US) trabaja en USD
+   aunque alguna tool escriba "€" y deletrea los números de pedido.
    No leas más de 3 opciones seguidas.
 
 7. ACCIONES DE PANTALLA — usa show_product al recomendar un café visible
@@ -150,8 +151,9 @@ Si el inventario cambia, actualizar a la vez este documento y la tabla de `CLAUD
 
 ## Pendiente conocido (datos BC)
 
-Los precios de la gama decaf (180–210 €) y de México/Costa Rica (180 €) en BC
-parecen estar por caja en vez de por bolsa de 250 g — la web vende WDB-1000 a
-19,50 €. Hasta corregirlo en BC, la web **no** superpone precios de BC (solo
-stock) y el agente debe citar el precio de la web para esos items si hay
-conflicto.
+Desde el 16/11/2026 BC es la empresa **Capsula US** (entorno Capsula30, USD).
+Los precios de la web son por bolsa de 250 g en US$ y el guion de datos
+(`bc-warehouse-3d/docs/datos-capsula-us.md`) pone los mismos en las fichas de BC.
+Hasta que se apliquen, BC mantiene precios por caja (180–210) en varios cafés:
+la web **no** superpone precios de BC (solo stock) y el agente debe citar el
+precio de la web si hay conflicto.

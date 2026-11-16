@@ -1,4 +1,5 @@
 // src/components/CoffeeCard.jsx
+import { formatPrice } from '../data/money.js'
 import styles from './CoffeeCard.module.css'
 
 function IntensityDots({ value }) {
@@ -59,7 +60,7 @@ export default function CoffeeCard({ coffee, highlighted = false, onView, onAdd 
 
       <div className={styles.footer}>
         <div className={styles.price}>
-          {coffee.price.toFixed(2).replace('.', ',')} €
+          {formatPrice(coffee.price)}
           <span className={styles.per}> / 250g</span>
         </div>
         <button

@@ -5,7 +5,7 @@ import styles from './HeroVoiceCard.module.css'
 const SUGGESTIONS = [
   'Algo con cuerpo',
   'Sin cafeína',
-  'Bajo de 20€',
+  'Menos de 20 $',
   'Frutal y suave',
 ]
 

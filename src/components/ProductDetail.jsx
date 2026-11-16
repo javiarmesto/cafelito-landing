@@ -7,6 +7,7 @@
 import { useEffect } from 'react'
 import { useCart } from '../context/CartContext.jsx'
 import { IconClose } from './Icons.jsx'
+import { formatPrice } from '../data/money.js'
 import styles from './ProductDetail.module.css'
 
 function IntensityDots({ value }) {
@@ -82,7 +83,7 @@ export default function ProductDetail({ coffee, onClose }) {
 
           <div className={styles.footer}>
             <div className={styles.price}>
-              {coffee.price.toFixed(2).replace('.', ',')} €
+              {formatPrice(coffee.price)}
               <span className={styles.per}> / 250g</span>
             </div>
             <button
