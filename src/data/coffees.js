@@ -10,7 +10,7 @@ export const coffees = [
     acidity: 'Media',
     body: 'Redondo',
     notes: 'Caramelo, frutos rojos, naranja',
-    price: 17.50,
+    price: 19.00,
     stock: 50,   // fallback — el stock real llega de /api/catalog
     bg: 'linear-gradient(135deg, #3D2010 0%, #6B3A1F 100%)',
     region: 'Huila',
@@ -31,7 +31,7 @@ export const coffees = [
     acidity: 'Baja',
     body: 'Cremoso',
     notes: 'Chocolate, nuez, vainilla',
-    price: 18.50,
+    price: 20.00,
     stock: 200,   // fallback — el stock real llega de /api/catalog
     bg: 'linear-gradient(135deg, #2D1A08 0%, #5C3317 100%)',
     region: 'Cerrado Mineiro',
@@ -52,7 +52,7 @@ export const coffees = [
     acidity: 'Alta',
     body: 'Ligero',
     notes: 'Jazmín, melocotón, bergamota',
-    price: 21.00,
+    price: 23.00,
     stock: 100,   // fallback — el stock real llega de /api/catalog
     bg: 'linear-gradient(135deg, #1E1508 0%, #4A3010 100%)',
     region: 'Yirgacheffe',
@@ -73,7 +73,7 @@ export const coffees = [
     acidity: 'Alta',
     body: 'Brillante',
     notes: 'Grosella negra, tomate, lima',
-    price: 22.00,
+    price: 24.00,
     stock: 200,   // fallback — el stock real llega de /api/catalog
     bg: 'linear-gradient(135deg, #1A1005 0%, #3D2808 100%)',
     region: 'Nyeri',
@@ -94,7 +94,7 @@ export const coffees = [
     acidity: 'Baja',
     body: 'Suave',
     notes: 'Chocolate con leche, almendra, miel',
-    price: 19.50,
+    price: 21.00,
     stock: 47,   // fallback — el stock real llega de /api/catalog
     bg: 'linear-gradient(135deg, #141010 0%, #2E1E18 100%)',
     region: 'Cauca',
@@ -115,7 +115,7 @@ export const coffees = [
     acidity: 'Baja',
     body: 'Sedoso',
     notes: 'Macadamia, coco, caramelo suave',
-    price: 34.00,
+    price: 37.00,
     stock: 100,   // fallback — el stock real llega de /api/catalog
     bg: 'linear-gradient(135deg, #1A0E08 0%, #402010 100%)',
     region: 'Kona',

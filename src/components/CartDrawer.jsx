@@ -11,11 +11,8 @@ import { useAgentActions, useVocalBridge } from '@vocalbridgeai/react'
 import { ConnectionState } from '@vocalbridgeai/sdk'
 import { useCart } from '../context/CartContext.jsx'
 import { IconMic, IconClose, IconTrash, IconCart } from './Icons.jsx'
+import { formatPrice } from '../data/money.js'
 import styles from './CartDrawer.module.css'
-
-function formatPrice(n) {
-  return `${n.toFixed(2).replace('.', ',')} €`
-}
 
 export default function CartDrawer({ onClose, onOpenVoice }) {
   const { items, count, total, setQty, removeItem, clear } = useCart()

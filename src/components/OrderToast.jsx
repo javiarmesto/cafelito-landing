@@ -6,6 +6,7 @@
 import { useEffect } from 'react'
 import { useCart } from '../context/CartContext.jsx'
 import { IconBean, IconClose } from './Icons.jsx'
+import { formatPrice } from '../data/money.js'
 import styles from './OrderToast.module.css'
 
 const AUTO_HIDE_MS = 12000
@@ -28,7 +29,7 @@ export default function OrderToast() {
         <div className={styles.title}>Cafelito comunica un pedido</div>
         <div className={styles.detail}>
           {lastOrder.order_number}
-          {lastOrder.total != null && ` · ${lastOrder.total.toFixed(2).replace('.', ',')} €`}
+          {lastOrder.total != null && ` · ${formatPrice(lastOrder.total)}`}
         </div>
         <div className={styles.detail}>Pendiente de comprobar en BC. Tu carrito se conserva.</div>
       </div>

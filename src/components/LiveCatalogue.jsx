@@ -12,13 +12,10 @@ import { resolveCoffee } from '../data/coffees.js'
 import { useCatalog } from '../context/CatalogContext.jsx'
 import { useCart } from '../context/CartContext.jsx'
 import { useTelemetry } from '../context/TelemetryContext.jsx'
+import { formatPrice } from '../data/money.js'
 import styles from './LiveCatalogue.module.css'
 
 const FOCUS_MS = 12000
-
-function formatPrice(n) {
-  return n.toFixed(2).replace('.', ',')
-}
 
 export default function LiveCatalogue({ onSelect }) {
   const { coffees, liveStock, stockLabel } = useCatalog()
@@ -106,7 +103,7 @@ export default function LiveCatalogue({ onSelect }) {
               </button>
 
               <div className={styles.cardFoot}>
-                <span className={styles.price}>{formatPrice(coffee.price)} €</span>
+                <span className={styles.price}>{formatPrice(coffee.price)}</span>
                 <button
                   className={styles.addBtn}
                   onClick={() => addItem(coffee.id)}

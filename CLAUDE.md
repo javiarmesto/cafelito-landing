@@ -190,14 +190,17 @@ del agente — 12 tools, ninguna más (en el dashboard aparecen prefijadas, `mcp
 
 6 orígenes activos:
 
-| ID | Nombre | Tipo | Precio |
+| ID | Nombre | Tipo | Precio (bolsa 250 g) |
 |---|---|---|---|
-| WRB-COL | Colombia | Whole Roasted Beans | 17,50 € |
-| WRB-BRA | Brasil | Whole Roasted Beans | 18,50 € |
-| WRB-ETH | Etiopía | Whole Roasted Beans | 21,00 € |
-| WRB-KEN | Kenia | Whole Roasted Beans | 22,00 € |
-| WDB-COL | Colombia Decaf | Whole Decaf Beans | 19,50 € |
-| WRB-HAW | Hawaii | Whole Roasted Beans | 34,00 € |
+| WRB-COL | Colombia | Whole Roasted Beans | 19,00 US$ |
+| WRB-BRA | Brasil | Whole Roasted Beans | 20,00 US$ |
+| WRB-ETH | Etiopía | Whole Roasted Beans | 23,00 US$ |
+| WRB-KEN | Kenia | Whole Roasted Beans | 24,00 US$ |
+| WDB-COL | Colombia Decaf | Whole Decaf Beans | 21,00 US$ |
+| WRB-HAW | Hawaii | Whole Roasted Beans | 37,00 US$ |
+
+Business Central es la empresa Capsula US (USD). Todos los precios en pantalla pasan por
+`formatPrice` de `src/data/money.js`.
 
 Para añadir orígenes: editar `src/data/coffees.js` siguiendo la misma estructura.
 Cada café incluye además `bcItemNo` (número de item real en Business Central — ej.
