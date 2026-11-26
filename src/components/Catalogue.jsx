@@ -10,13 +10,15 @@ import { ConnectionState } from '@vocalbridgeai/sdk'
 import { resolveCoffee } from '../data/coffees.js'
 import { useCart } from '../context/CartContext.jsx'
 import { useCatalog } from '../context/CatalogContext.jsx'
-import CoffeeReleases from './CoffeeReleases.jsx'
+import CoffeeReleases, { CoffeeRehearsalSnapshot } from './CoffeeReleases.jsx'
 import CoffeeCard from './CoffeeCard.jsx'
 import styles from './Catalogue.module.css'
 
 const HIGHLIGHT_MS = 6000
 
 export default function Catalogue({ onSelect }) {
+  const releaseMode = new URLSearchParams(window.location.search).get('novedades')
+  const showLiveReleases = releaseMode === '1' || import.meta.env.VITE_CAFELITO_RELEASES === 'true'
   const { state } = useVocalBridge()
   const { onAction, sendAction } = useAgentActions()
   const { addItem } = useCart()
@@ -64,7 +66,7 @@ export default function Catalogue({ onSelect }) {
         <p className={styles.sub}>{stockLabel}. Precios orientativos del catálogo web.</p>
       </div>
 
-      {(import.meta.env.VITE_CAFELITO_RELEASES === 'true' || new URLSearchParams(window.location.search).get('novedades') === '1') && <CoffeeReleases />}
+      {releaseMode === 'copia' ? <CoffeeRehearsalSnapshot /> : showLiveReleases && <CoffeeReleases />}
 
       <div className={styles.grid}>
         {coffees.map(coffee => (
