@@ -10,6 +10,7 @@ import { ConnectionState } from '@vocalbridgeai/sdk'
 import { resolveCoffee } from '../data/coffees.js'
 import { useCart } from '../context/CartContext.jsx'
 import { useCatalog } from '../context/CatalogContext.jsx'
+import CoffeeReleases from './CoffeeReleases.jsx'
 import CoffeeCard from './CoffeeCard.jsx'
 import styles from './Catalogue.module.css'
 
@@ -62,6 +63,8 @@ export default function Catalogue({ onSelect }) {
         </p>
         <p className={styles.sub}>{stockLabel}. Precios orientativos del catálogo web.</p>
       </div>
+
+      {(import.meta.env.VITE_CAFELITO_RELEASES === 'true' || new URLSearchParams(window.location.search).get('novedades') === '1') && <CoffeeReleases />}
 
       <div className={styles.grid}>
         {coffees.map(coffee => (
