@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { formatPrice } from '../data/money.js'
+import snapshot from '../data/ruandaEnsayo.json'
 import styles from './CoffeeReleases.module.css'
 
 const tokenURL = import.meta.env.VITE_TOKEN_URL || 'http://localhost:3001/api/voice-token'
@@ -57,6 +58,28 @@ export default function CoffeeReleases() {
           <p>{item.stock > 0 ? item.stock + ' bolsas en existencias' : 'Sin existencias'}</p>
         </article>
       ))}</div>}
+    </section>
+  )
+}
+
+
+export function CoffeeRehearsalSnapshot() {
+  return (
+    <section id="copia-ruanda" className={styles.releases} aria-labelledby="titulo-copia-ruanda">
+      <div className={styles.heading}>
+        <h3 id="titulo-copia-ruanda">Nuevas incorporaciones</h3>
+      </div>
+      <p>Copia de ensayo · Datos comprobados en Business Central el 26 de noviembre de 2026.</p>
+      <div className={styles.grid}>
+        <article className={styles.product}>
+          <img src={snapshot.image} alt="Etiqueta del café Ruanda Nyamasheke" />
+          <p>Artículo {snapshot.number}</p>
+          <h4>{snapshot.name}</h4>
+          <p>{snapshot.unit}</p>
+          <p><strong>{snapshot.price} {snapshot.currency}</strong></p>
+          <p>Existencias: {snapshot.stock} bolsas</p>
+        </article>
+      </div>
     </section>
   )
 }
