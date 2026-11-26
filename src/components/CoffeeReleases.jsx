@@ -3,10 +3,11 @@ import { formatPrice } from '../data/money.js'
 import styles from './CoffeeReleases.module.css'
 
 const tokenURL = import.meta.env.VITE_TOKEN_URL || 'http://localhost:3001/api/voice-token'
-const releasesURL = new URL(tokenURL, window.location.origin)
-releasesURL.pathname = releasesURL.pathname.replace(/\/api\/voice-token\/?$/, '/api/catalog/releases')
-releasesURL.search = ''
-releasesURL.hash = ''
+const defaultReleasesURL = new URL(tokenURL, window.location.origin)
+defaultReleasesURL.pathname = defaultReleasesURL.pathname.replace(/\/api\/voice-token\/?$/, '/api/catalog/releases')
+defaultReleasesURL.search = ''
+defaultReleasesURL.hash = ''
+const releasesURL = new URL(import.meta.env.VITE_CAFELITO_RELEASES_URL || defaultReleasesURL.href, window.location.origin)
 
 export default function CoffeeReleases() {
   const [items, setItems] = useState([])
